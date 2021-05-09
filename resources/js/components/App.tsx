@@ -1,5 +1,6 @@
 import React from "react";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import Dashboard from "./Dashboard/Dashboard";
 import Home from "./Home/Home";
 import Login from "./Login/Login";
 import Page404 from "./Page404";
@@ -17,6 +18,9 @@ const App = () => {
                     </li>
                 </ul>
                 <Switch>
+                    <Route path="/dashboard" exact>
+                        <Dashboard />
+                    </Route>
                     <Route path="/login" exact>
                         <Login />
                     </Route>
