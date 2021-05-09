@@ -2903,12 +2903,12 @@ var Login = function Login() {
       console.log(code);
       axios_1["default"].get("/api/?code=" + code).then(function (res) {
         if (res.status === 200) {
+          console.log(res);
+          history.push("/dashboard");
           return res;
         }
 
         throw new Error("Error");
-      }).then(function (data) {
-        console.log(data); // history.push("/dashboard");
       })["catch"](function (err) {
         console.log(err);
       });

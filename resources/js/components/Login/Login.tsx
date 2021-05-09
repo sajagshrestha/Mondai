@@ -14,13 +14,11 @@ const Login: React.FC = () => {
                 .get(`/api/?code=${code}`)
                 .then((res) => {
                     if (res.status === 200) {
+                        console.log(res);
+                        history.push("/dashboard");
                         return res;
                     }
                     throw new Error("Error");
-                })
-                .then((data) => {
-                    console.log(data);
-                    // history.push("/dashboard");
                 })
                 .catch((err) => {
                     console.log(err);
