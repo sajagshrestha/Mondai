@@ -11,10 +11,10 @@ const Login: React.FC = () => {
         if (code) {
             console.log(code);
             axios
-                .get(`/api/?code=${code}`)
+                .get(`/api/login/google/callback?code=${code}`)
                 .then((res) => {
-                    if (res.status === 200) {
-                        console.log(res);
+                    if (res.status === 201) {
+                        console.log(res.data.data.user);
                         history.push("/dashboard");
                         return res;
                     }
