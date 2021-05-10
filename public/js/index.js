@@ -2901,9 +2901,9 @@ var Login = function Login() {
   react_1.useEffect(function () {
     if (code) {
       console.log(code);
-      axios_1["default"].get("/api/?code=" + code).then(function (res) {
-        if (res.status === 200) {
-          console.log(res);
+      axios_1["default"].get("/api/login/google/callback?code=" + code).then(function (res) {
+        if (res.status === 201) {
+          console.log(res.data.data.user);
           history.push("/dashboard");
           return res;
         }
