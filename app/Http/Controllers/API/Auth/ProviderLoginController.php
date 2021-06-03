@@ -1,11 +1,10 @@
 <?php
 
-namespace App\Http\Controllers\Auth;
+namespace App\Http\Controllers\API\Auth;
 
-use App\Http\Controllers\Controller;
-use App\Http\Controllers\ResponseController;
+use App\Http\Controllers\API\ResponseController;
 use App\Models\User;
-use Illuminate\Http\Request;
+use GuzzleHttp\Exception\ClientException;
 use Laravel\Socialite\Facades\Socialite;
 
 class ProviderLoginController extends ResponseController
@@ -58,11 +57,12 @@ class ProviderLoginController extends ResponseController
             ]
         );
         $token = $userCreated->createToken('userAccessToken')->plainTextToken;
-        return $this->responseResourceCreated('Logged in successfully', [
+        return $this->responseResourceCreated('Lololgged in successfully', [
             'user' => [
                 'id' => $userCreated->id,
                 'name' => $userCreated->name,
-            ], 
+                // 'avatar' =>
+            ],
             'access_token' => $token
         ]);
     }
@@ -79,7 +79,7 @@ class ProviderLoginController extends ResponseController
             'google',
         ];
         if (!in_array($provider, $providers)) {
-            return $this->responseUnprocessable(['error' =>'Please login using Google']); ;
+            return $this->responseUnprocessable(['error' => 'Please login using Google']);;
         }
     }
 }

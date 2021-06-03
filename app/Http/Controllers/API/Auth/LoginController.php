@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Http\Controllers\Auth;
+namespace App\Http\Controllers\API\Auth;
 
-use App\Http\Controllers\Controller;
-use App\Http\Controllers\ResponseController;
+
+use App\Http\Controllers\API\ResponseController;
 use Illuminate\Http\Request;
 
 class LoginController extends ResponseController
@@ -25,7 +25,7 @@ class LoginController extends ResponseController
             'user' => [
                 'id' => $user->id,
                 'name' => $user->name,
-            ], 
+            ],
             'access_token' => $token
         ]);
     }

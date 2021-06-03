@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Http\Controllers\Auth;
+namespace App\Http\Controllers\API\Auth;
 
-use App\Http\Controllers\ResponseController;
+use App\Http\Controllers\API\ResponseController;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -25,11 +25,12 @@ class RegisterController extends ResponseController
 
         $token = $user->createToken('user-token')->plainTextToken;
 
+
         return $this->responseResourceCreated($message = 'User created successfully', [
             'user' => [
                 'id' => $user->id,
                 'name' => $user->name,
-            ], 
+            ],
             'access_token' => $token
         ]);
     }
