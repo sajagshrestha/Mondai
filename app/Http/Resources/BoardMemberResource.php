@@ -16,8 +16,8 @@ class BoardMemberResource extends JsonResource
     {
         return [
             'user' => [
-                'id' => $this->member->id,
-                'name' => $this->member->name,
+                'id' => $this->user->id,
+                'name' => $this->user->name,
                 'role' =>$this->role
             ],
             'created_at' => $this->created_at->diffForHumans(),

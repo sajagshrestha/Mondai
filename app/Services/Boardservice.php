@@ -5,6 +5,7 @@ namespace App\Services;
 
 
 use App\Models\Board;
+use App\Models\User;
 
 class BoardService
 {
@@ -31,5 +32,14 @@ class BoardService
             return true;
 
         return false;
+    }
+
+    public function memberExists($request,Board $board)
+    {
+        $user = User::find($request->user_id);
+        if($board->member()->where('user_id',$request->user_id)->exists())
+            return true;
+        else
+            return false;
     }
 }

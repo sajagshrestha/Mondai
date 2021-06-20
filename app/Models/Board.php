@@ -18,6 +18,6 @@ class Board extends Model
 
     public function member()
     {
-        return $this->hasMany(BoardMember::Class);
+        return $this->hasMany(BoardMember::class);
     }
 }
