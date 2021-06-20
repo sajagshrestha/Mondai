@@ -3001,28 +3001,36 @@ var query_string_1 = __importDefault(__webpack_require__(/*! query-string */ "./
 
 var axios_1 = __importDefault(__webpack_require__(/*! axios */ "./node_modules/axios/index.js"));
 
+var localStorage_1 = __webpack_require__(/*! ../../utils/localStorage */ "./resources/js/utils/localStorage.ts");
+
 var Login = function Login() {
   var history = react_router_dom_1.useHistory();
-  var search = react_router_dom_1.useLocation().search;
+
+  var _a = react_router_dom_1.useLocation(),
+      search = _a.search,
+      pathname = _a.pathname;
+
   var code = query_string_1["default"].parse(search).code;
   react_1.useEffect(function () {
     if (code) {
       axios_1["default"].get("/api/login/google/callback?code=" + code).then(function (res) {
         if (res.status === 201) {
-          console.log(res.data.data);
+          var data = res.data.data;
+          localStorage_1.saveToStorage("user", {
+            isLoggedIn: true,
+            token: data.access_token,
+            user: data.user
+          });
           history.push("/dashboard");
-          return res;
         }
-
-        throw new Error("Error");
       })["catch"](function (err) {
         console.log(err);
       });
-    } else {
-      history.push("/api/login/google");
     }
+
+    if (!code) window.location.replace(window.location.origin + "/api/login/google"); //refactor needed
   }, []);
-  return react_1["default"].createElement("div", null, "Log in");
+  return react_1["default"].createElement(react_1["default"].Fragment, null, " ");
 };
 
 exports.default = Login;
@@ -3124,6 +3132,42 @@ var App_1 = __importDefault(__webpack_require__(/*! ./components/App */ "./resou
 react_dom_1.render(react_1["default"].createElement(styled_components_1.ThemeProvider, {
   theme: Theme_1.darkTheme
 }, react_1["default"].createElement(react_router_dom_1.BrowserRouter, null, react_1["default"].createElement(GlobalStyle_1["default"], null), react_1["default"].createElement(App_1["default"], null))), document.getElementById("app"));
+
+/***/ }),
+
+/***/ "./resources/js/utils/localStorage.ts":
+/*!********************************************!*\
+  !*** ./resources/js/utils/localStorage.ts ***!
+  \********************************************/
+/***/ ((__unused_webpack_module, exports) => {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports.removeFromStorage = exports.loadFromStorage = exports.saveToStorage = void 0;
+
+var saveToStorage = function saveToStorage(key, value) {
+  localStorage.setItem(key, JSON.stringify(value));
+};
+
+exports.saveToStorage = saveToStorage;
+
+var loadFromStorage = function loadFromStorage(key) {
+  // return JSON.parse(localStorage.getItem("key"));
+  var dataFromStorage = localStorage.getItem(key);
+  return JSON.parse(dataFromStorage ? dataFromStorage : "");
+};
+
+exports.loadFromStorage = loadFromStorage;
+
+var removeFromStorage = function removeFromStorage(key) {
+  localStorage.removeItem(key);
+};
+
+exports.removeFromStorage = removeFromStorage;
 
 /***/ }),
 
