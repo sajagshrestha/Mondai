@@ -9,12 +9,11 @@ const Login: React.FC = () => {
 
     useEffect(() => {
         if (code) {
-            console.log(code);
             axios
                 .get(`/api/login/google/callback?code=${code}`)
                 .then((res) => {
                     if (res.status === 201) {
-                        console.log(res.data.data.user);
+                        console.log(res.data.data);
                         history.push("/dashboard");
                         return res;
                     }
@@ -23,10 +22,12 @@ const Login: React.FC = () => {
                 .catch((err) => {
                     console.log(err);
                 });
+        } else {
+            history.push("/api/login/google");
         }
     }, []);
 
-    return <a href="/api/login/google">Login with google</a>;
+    return <div>Log in</div>;
 };
 
 export default Login;

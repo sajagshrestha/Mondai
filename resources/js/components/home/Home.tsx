@@ -9,11 +9,11 @@ const HomeWrapper = styled.div`
 `;
 
 const HeroTitleSection = styled.div`
-    padding-top: 4rem;
     display: flex;
     flex-direction: column;
     gap: 1rem;
     align-items: flex-start;
+    justify-content: center;
 `;
 
 const Title = styled.h1`
@@ -52,7 +52,7 @@ const Home: React.FC = () => {
                     Capture, track, resolve and report on bugs and issues
                     throughout your entire development process.
                 </SecondaryTitle>
-                <GoogleButton click={() => console.log("clicked")} />
+                <GoogleButton />
             </HeroTitleSection>
             <HeroImgSection>
                 <HeroImg src={heroSVGPath} alt="hero" />
