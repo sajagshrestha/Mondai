@@ -25,7 +25,7 @@ class BoardRequest extends FormRequest
     {
         return [
             'name' => 'required|string',
-            'description' => 'nullable|text'
+            'description' => 'nullable|string'
         ];
     }
 }

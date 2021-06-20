@@ -44,7 +44,7 @@ abstract class ResponseController extends Controller
      * @param  string $message
      * @return \Illuminate\Http\JsonResponse
      */
-    public function responseResourceCreated($message = 'Resource created.',$data)
+    public function responseResourceCreated($message = 'Resource created.',$data = null)
     {
         return response()->json([
             'status' => 201,
@@ -62,9 +62,9 @@ abstract class ResponseController extends Controller
     public function responseResourceDeleted($message = 'Resource deleted.')
     {
         return response()->json([
-            'status' => 204,
+            'status' => 200,
             'message' => $message,
-        ], 204);
+        ], 200);
     }
 
     /**

@@ -6,7 +6,7 @@ namespace App\Services;
 
 use App\Models\Board;
 
-class Boardservice
+class BoardService
 {
 
     /**
@@ -17,16 +17,19 @@ class Boardservice
     public function __construct(Board $board)
     {
         $this->board = $board;
-
     }
 
-    public function nameExists($request)
+    public function nameExists($request, Board $except = null)
     {
         $user = $request->user();
-        $boardNames = $user->boards()->where('name', '=', $request->name)->first();
-        if ($boardNames) {
-            return true;
+        $board = $user->boards()->where('name', '=', $request->name)->first();
+        if (isset($except)) {
+            if ($except->id === $board->id)
+                return false;
         }
+        if ($board)
+            return true;
+
         return false;
     }
 }

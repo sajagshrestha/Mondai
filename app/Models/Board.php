@@ -15,4 +15,9 @@ class Board extends Model
     {
         return $this->belongsTo(User::class, 'user_id');
     }
+
+    public function member()
+    {
+        return $this->hasMany(BoardMember::Class);
+    }
 }
