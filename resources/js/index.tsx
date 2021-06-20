@@ -1,12 +1,17 @@
 import React from "react";
 import { render } from "react-dom";
-import App from "./components/App";
+import { BrowserRouter } from "react-router-dom";
 import { ThemeProvider } from "styled-components";
-import { GlobalStyle, darkTheme } from "./Theme";
+import { darkTheme } from "./Theme";
+import GlobalStyle from "./Theme/GlobalStyle";
+import App from "./components/App";
+
 render(
     <ThemeProvider theme={darkTheme}>
-        <GlobalStyle />
-        <App />
+        <BrowserRouter>
+            <GlobalStyle />
+            <App />
+        </BrowserRouter>
     </ThemeProvider>,
     document.getElementById("app")
 );
