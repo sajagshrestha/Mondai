@@ -1,4 +1,5 @@
 import React from "react";
+import { useHistory } from "react-router-dom";
 import styled from "styled-components";
 import googleIconPath from "../../assets/google.svg";
 
@@ -22,13 +23,15 @@ const ButtonLabel = styled.p`
     font-weight: bold;
 `;
 
-interface Props {
-    click: () => void;
-}
+const GoogleButton: React.FC = () => {
+    const history = useHistory();
 
-const GoogleButton: React.FC<Props> = ({ click }) => {
+    const googleLogin = () => {
+        history.push("/login");
+    };
+
     return (
-        <GoogleButtonWrapper onClick={click}>
+        <GoogleButtonWrapper onClick={googleLogin}>
             <GoogleIcon src={googleIconPath} alt="google icon" />
             <ButtonLabel>Continue With Google</ButtonLabel>
         </GoogleButtonWrapper>

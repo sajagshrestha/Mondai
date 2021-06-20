@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import styled from "styled-components";
 import Home from "./home/Home";
 import Nav from "./nav/Nav";
+import Login from "./login/Login";
 
 const AppWrapper = styled.div`
     min-height: 100vh;
@@ -22,6 +23,9 @@ const App: React.FC = () => {
                 <Switch>
                     <Route exact path="/">
                         <Home />
+                    </Route>
+                    <Route exact path="/login">
+                        <Login />
                     </Route>
                 </Switch>
             </MainWrapper>
