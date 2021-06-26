@@ -2,6 +2,9 @@ import React from "react";
 import styled from "styled-components";
 import heroSVGPath from "../../assets/hero.svg";
 import GoogleButton from "./GoogleButton";
+import Button from "../common/Button";
+import { useReduxSelector } from "../../reducers";
+import { useHistory } from "react-router-dom";
 
 const HomeWrapper = styled.div`
     display: grid;
@@ -42,6 +45,13 @@ const HeroImg = styled.img`
 `;
 
 const Home: React.FC = () => {
+    const { isLoggedIn } = useReduxSelector((state) => state.user);
+    const history = useHistory();
+
+    const onGoToDashboard = () => {
+        history.push("/dashboard");
+    };
+
     return (
         <HomeWrapper>
             <HeroTitleSection>
@@ -52,7 +62,11 @@ const Home: React.FC = () => {
                     Capture, track, resolve and report on bugs and issues
                     throughout your entire development process.
                 </SecondaryTitle>
-                <GoogleButton />
+                {isLoggedIn ? (
+                    <Button onClick={onGoToDashboard}>Go to Dashboard</Button>
+                ) : (
+                    <GoogleButton />
+                )}
             </HeroTitleSection>
             <HeroImgSection>
                 <HeroImg src={heroSVGPath} alt="hero" />

@@ -2,10 +2,11 @@ export const saveToStorage = (key: string, value: {}) => {
     localStorage.setItem(key, JSON.stringify(value));
 };
 
-export const loadFromStorage = (key: string): {} | null => {
+export const loadFromStorage = (key: string): any | null => {
     // return JSON.parse(localStorage.getItem("key"));
     const dataFromStorage = localStorage.getItem(key);
-    return JSON.parse(dataFromStorage ? dataFromStorage : "");
+    if (!dataFromStorage) return null;
+    return JSON.parse(dataFromStorage);
 };
 
 export const removeFromStorage = (key: string) => {
