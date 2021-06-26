@@ -1,12 +1,17 @@
 import React, { useEffect } from "react";
-import { useLocation, useHistory } from "react-router-dom";
+import { useLocation, useHistory, Redirect } from "react-router-dom";
 import queryString from "query-string";
 import axios from "axios";
 import { saveToStorage } from "../../utils/localStorage";
+import { useReduxSelector, useReduxDispatch } from "../../reducers";
+import { userReducer } from "../../reducers/userReducer";
 
 const Login: React.FC = () => {
+    const dispatch = useReduxDispatch();
+    const { isLoggedIn } = useReduxSelector((state) => state.user);
+
     const history = useHistory();
-    const { search, pathname } = useLocation();
+    const { search } = useLocation();
     const { code } = queryString.parse(search);
 
     useEffect(() => {
@@ -21,6 +26,7 @@ const Login: React.FC = () => {
                             token: data.access_token,
                             user: data.user,
                         });
+                        dispatch({ type: "LOGIN", payload: data.user.name });
                         history.push("/dashboard");
                     }
                 })
@@ -34,7 +40,11 @@ const Login: React.FC = () => {
             ); //refactor needed
     }, []);
 
-    return <> </>;
+    return (
+        <>
+            {isLoggedIn} ? <Redirect to="/dashboard" /> : null
+        </>
+    );
 };
 
 export default Login;
