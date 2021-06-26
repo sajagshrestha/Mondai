@@ -1,34 +1,35 @@
 import React from "react";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
-import Home from "./Home/Home";
-import Login from "./Login/Login";
-import Page404 from "./Page404";
+import styled from "styled-components";
+import Home from "./home/Home";
+import Nav from "./nav/Nav";
+import Login from "./login/Login";
 
-const App = () => {
+const AppWrapper = styled.div`
+    min-height: 100vh;
+    background-color: ${(props) => props.theme.primaryBackground};
+`;
+
+const MainWrapper = styled.div`
+    width: min(80%, 1250px);
+    margin: 0 auto;
+`;
+
+const App: React.FC = () => {
     return (
-        <div>
-            <Router>
-                <ul>
-                    <li>
-                        <Link to="/">Home</Link>
-                    </li>
-                    <li>
-                        <Link to="/login">Login</Link>
-                    </li>
-                </ul>
+        <AppWrapper>
+            <MainWrapper>
+                <Nav />
                 <Switch>
-                    <Route path="/login" exact>
-                        <Login />
-                    </Route>
-                    <Route path="/" exact>
+                    <Route exact path="/">
                         <Home />
                     </Route>
-                    <Route>
-                        <Page404 />
+                    <Route exact path="/login">
+                        <Login />
                     </Route>
                 </Switch>
-            </Router>
-        </div>
+            </MainWrapper>
+        </AppWrapper>
     );
 };
 

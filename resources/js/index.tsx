@@ -1,12 +1,21 @@
 import React from "react";
 import { render } from "react-dom";
-import App from "./components/App";
+import { BrowserRouter } from "react-router-dom";
 import { ThemeProvider } from "styled-components";
-import { GlobalStyle, darkTheme } from "./Theme";
+import { darkTheme } from "./Theme";
+import GlobalStyle from "./Theme/GlobalStyle";
+import App from "./components/App";
+import { Provider } from "react-redux";
+import store from "./store";
+
 render(
-    <ThemeProvider theme={darkTheme}>
-        <GlobalStyle />
-        <App />
-    </ThemeProvider>,
+    <Provider store={store}>
+        <ThemeProvider theme={darkTheme}>
+            <BrowserRouter>
+                <GlobalStyle />
+                <App />
+            </BrowserRouter>
+        </ThemeProvider>
+    </Provider>,
     document.getElementById("app")
 );

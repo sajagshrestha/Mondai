@@ -1,21 +1,19 @@
-import { createGlobalStyle, DefaultTheme } from "styled-components";
+import { DefaultTheme } from "styled-components";
 
 declare module "styled-components" {
     export interface DefaultTheme {
         primaryBackground: string;
-        primaryColor: string;
+        primaryText: string;
+        secondaryText: string;
+        primaryFont: string;
+        highlightedText: string;
     }
 }
 
 export const darkTheme: DefaultTheme = {
     primaryBackground: "#1b1b1b",
-    primaryColor: "#f1f1f1",
+    primaryText: "#ffffff",
+    highlightedText: "#FF725E",
+    primaryFont: "'Red Hat Text', sans-serif;",
+    secondaryText: "#E5E5E5",
 };
-
-export const GlobalStyle = createGlobalStyle`
-	*, *::before,*::after{
-		margin:0;
-		padding:0;
-		box-sizing:border-box
-	}
-`;
