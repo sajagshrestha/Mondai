@@ -45,6 +45,8 @@ class ProviderLoginController extends ResponseController
                 'email_verified_at' => now(),
                 'name' => $user->getName(),
                 'status' => true,
+                'avatar' => $user->getAvatar()
+
             ]
         );
         $userCreated->providers()->updateOrCreate(
@@ -52,9 +54,6 @@ class ProviderLoginController extends ResponseController
                 'provider' => $provider,
                 'provider_id' => $user->getId(),
             ],
-            [
-                'avatar' => $user->getAvatar()
-            ]
         );
         $token = $userCreated->createToken('userAccessToken')->plainTextToken;
         return $this->responseResourceCreated('Lololgged in successfully', [
