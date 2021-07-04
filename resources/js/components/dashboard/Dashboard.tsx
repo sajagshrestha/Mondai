@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { useQuery } from "react-query";
 import styled from "styled-components";
 import { fetchAllBoards } from "../../services/BoardService";
@@ -18,7 +18,7 @@ const Dashboard = () => {
         <DashboardWrapper>
             <CreateProjectSection></CreateProjectSection>
             <ProjectsSection>
-                {data.map((board: any) => board.name)}
+                {data?.map((board: any) => board.name)}
             </ProjectsSection>
         </DashboardWrapper>
     );
