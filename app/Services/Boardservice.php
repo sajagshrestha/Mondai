@@ -24,7 +24,7 @@ class BoardService
     {
         $user = $request->user();
         $board = $user->boards()->where('name', '=', $request->name)->first();
-        if (isset($except)) {
+        if (isset($except) && isset($board)) {
             if ($except->id === $board->id)
                 return false;
         }

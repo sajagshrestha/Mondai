@@ -31,6 +31,7 @@ class User extends Authenticatable
     protected $hidden = [
         'password',
         'remember_token',
+        'email_verified_at'
     ];
 
     /**
@@ -47,8 +48,9 @@ class User extends Authenticatable
         return $this->hasMany(Provider::class);
     }
 
-    public function boards(): \Illuminate\Database\Eloquent\Relations\HasMany
+    public function boards()
     {
-        return $this->hasMany(Board::class);
+        return $this->belongsToMany(Board::class,'board_member', 'user_id', 'board_id');
     }
+
 }

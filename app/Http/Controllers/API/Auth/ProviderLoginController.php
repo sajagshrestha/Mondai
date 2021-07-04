@@ -44,6 +44,7 @@ class ProviderLoginController extends ResponseController
             [
                 'email_verified_at' => now(),
                 'name' => $user->getName(),
+                'avatar' => $user->getAvatar(),
                 'status' => true,
                 'avatar' => $user->getAvatar()
 
