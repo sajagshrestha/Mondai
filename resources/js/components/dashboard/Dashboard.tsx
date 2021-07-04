@@ -1,6 +1,20 @@
-import React from "react";
+import React, { useEffect } from "react";
+import styled from "styled-components";
+import { getAuthToken } from "../../services";
+
+const DashboardWrapper = styled.div``;
+
+const CreateProjectSection = styled.div``;
+
+const ProjectsSection = styled.div``;
 
 const Dashboard = () => {
-    return <h1>Dashboard</h1>;
+    useEffect(() => console.log(getAuthToken()), []);
+    return (
+        <DashboardWrapper>
+            <CreateProjectSection></CreateProjectSection>
+            <ProjectsSection>{getAuthToken()}</ProjectsSection>
+        </DashboardWrapper>
+    );
 };
 export default Dashboard;
