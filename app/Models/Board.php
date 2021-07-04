@@ -18,7 +18,7 @@ class Board extends Model
 
     public function members()
     {
-        return $this->belongsToMany(User::class, 'board_member',  'board_id', 'user_id')->withTimestamps();
+        return $this->belongsToMany(User::class, 'board_members',  'board_id', 'user_id')->withTimestamps();
     }
 
     public function lists()
