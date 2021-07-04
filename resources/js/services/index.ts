@@ -1,9 +1,12 @@
 import { loadFromStorage } from "../utils/localStorage";
 
-export const BASE_URL = process.env.APP_URL;
+export const BASE_URL = process.env.MIX_API_URL;
 
 export const getAuthToken = () => {
-    const { token } = loadFromStorage("user");
-    return `Bearer ${token ? token : ""}`;
-    // return BASE_URL;
+    const user = loadFromStorage("user");
+    return `Bearer ${user?.token}`;
 };
+
+export const getAuthHeader = () => ({
+    Authorization: getAuthToken(),
+});
