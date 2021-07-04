@@ -7,14 +7,19 @@ import GlobalStyle from "./Theme/GlobalStyle";
 import App from "./components/App";
 import { Provider } from "react-redux";
 import store from "./store";
+import { QueryClient, QueryClientProvider } from "react-query";
+
+const queryClient = new QueryClient();
 
 render(
     <Provider store={store}>
         <ThemeProvider theme={darkTheme}>
-            <BrowserRouter>
-                <GlobalStyle />
-                <App />
-            </BrowserRouter>
+            <QueryClientProvider client={queryClient}>
+                <BrowserRouter>
+                    <GlobalStyle />
+                    <App />
+                </BrowserRouter>
+            </QueryClientProvider>
         </ThemeProvider>
     </Provider>,
     document.getElementById("app")

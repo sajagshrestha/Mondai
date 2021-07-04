@@ -4,6 +4,7 @@ import styled from "styled-components";
 import Home from "./home/Home";
 import Nav from "./nav/Nav";
 import Login from "./login/Login";
+import Dashboard from "./dashboard/Dashboard";
 
 const AppWrapper = styled.div`
     min-height: 100vh;
@@ -26,6 +27,9 @@ const App: React.FC = () => {
                     </Route>
                     <Route exact path="/login">
                         <Login />
+                    </Route>
+                    <Route exact path="/dashboard">
+                        <Dashboard />
                     </Route>
                 </Switch>
             </MainWrapper>
