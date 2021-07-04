@@ -18,7 +18,7 @@ class BoardListController extends ResponseController
      */
     public function index(Board $board)
     {
-        $boardLists = $board->lists;
+        $boardLists = $board->lists()->orderBy('position');
         return $this->responseSuccess('',[BoardListResource::collection($boardLists)]);
     }
 
