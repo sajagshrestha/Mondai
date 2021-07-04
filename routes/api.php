@@ -31,3 +31,6 @@ Route::resource('boards', App\Http\Controllers\API\BoardController::class)->exce
 Route::get('board-member/{board}',[App\Http\Controllers\API\BoardMemberController::class,'index'] );
 Route::post('board-member/create/{board}',[App\Http\Controllers\API\BoardMemberController::class,'store'] );
 Route::delete('board-member/{board}',[App\Http\Controllers\API\BoardMemberController::class,'destroy'] );
+
+
+Route::get('board-list/{board}',[App\Http\Controllers\API\BoardListController::class,'index']);

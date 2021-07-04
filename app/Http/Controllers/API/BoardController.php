@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Requests\BoardRequest;
 use App\Http\Resources\BoardResource;
+use App\Jobs\BoardJob;
 use App\Models\Board;
 use App\Services\BoardService;
 use Illuminate\Http\JsonResponse;
@@ -39,7 +40,11 @@ class BoardController extends ResponseController
             ]);
         }
         $user = $request->user();
-        $board = $user->boards()->create($request->only('name', 'description'));
+        $request->request->add(['user_id' => $user->id]);
+        $board = Board::create($request->all());
+        $board->members()->attach($user,['role' => 'owner']);
+        // $boardCreateJob = new BoardJob($user,$board);
+        // $this->dispatch($boardCreateJob);
         return $this->responseResourceCreated('Successfully created board', [new BoardResource($board)]);
     }
 
@@ -52,7 +57,7 @@ class BoardController extends ResponseController
     {
         if ($this->boardService->nameExists($request,$board)) {
             return $this->responseUnprocessable([
-                'name' => ['Project already exists. Please select another name'],
+                'name' => ['Project name already exists. Please select another name'],
             ]);
         }
         $board->update($request->only('name', 'description'));

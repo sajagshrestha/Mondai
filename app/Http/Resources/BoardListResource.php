@@ -2,10 +2,9 @@
 
 namespace App\Http\Resources;
 
-use Carbon\Carbon;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class BoardResource extends JsonResource
+class BoardListResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -16,12 +15,12 @@ class BoardResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'id' => $this->id,
+            'id' =>$this->id,
             'name' => $this->name,
             'description' => $this->description,
-            'owner' => $this->creator,
-            'members' => $this->members,
+            'position' => $this->position,
             'created_at' => $this->created_at->diffForHumans(),
+
         ];
     }
 }

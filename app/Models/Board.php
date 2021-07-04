@@ -9,15 +9,20 @@ class Board extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'description'];
+    protected $fillable = ['name', 'description', 'user_id'];
 
     public function creator()
     {
-        return $this->belongsTo(User::class, 'user_id');
+        return $this->belongsTo(User::class,'user_id');
     }
 
-    public function member()
+    public function members()
     {
-        return $this->hasMany(BoardMember::class);
+        return $this->belongsToMany(User::class, 'board_member',  'board_id', 'user_id')->withTimestamps();
+    }
+
+    public function lists()
+    {
+        $this->hasMany(BoardList::class);
     }
 }
