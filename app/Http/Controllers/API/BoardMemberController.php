@@ -2,25 +2,17 @@
 
 namespace App\Http\Controllers\API;
 
-use App\Http\Resources\BoardMemberResource;
 use App\Models\Board;
 use App\Models\User;
-use App\Services\BoardService;
 use Illuminate\Http\Request;
-
-use function PHPSTORM_META\type;
+use Illuminate\Support\Facades\URL;
 
 class BoardMemberController extends ResponseController
 {
-    /**
-     * @var BoardService
-     */
-    private $boardService;
 
-    public function __construct(BoardService $boardService)
+    public function __construct()
     {
         $this->middleware('auth:sanctum');
-        $this->boardService = $boardService;
     }
 
     /**
@@ -30,9 +22,15 @@ class BoardMemberController extends ResponseController
      */
     public function index(Board $board)
     {
-        return $this->responseSuccess(BoardMemberResource::collection($board->member));
+        return $this->responseSuccess($board->members);
     }
 
+
+    public function create(Board $board)
+    {
+        $invitaion = URL::signedRoute('member.store', ['board' => $board->id]);
+        return $this->responseSuccess('',$invitaion);
+    }
 
     /**
      * Store a newly created resource in storage.
@@ -42,30 +40,22 @@ class BoardMemberController extends ResponseController
      */
     public function store(Request $request, Board $board)
     {
-        $this->validate($request, [
-            'user_id' => 'required|exists:users,id'
-        ]);
-        if ($this->boardService->memberExists($request, $board)) {
+        if (! $request->hasValidSignature()) {
+            return $this->responseUnprocessable([
+                'error' => 'Invalid invitation',
+            ]);
+        }
+        $user = $request->user();
+        if ($board->members->contains($user->id)) {
             return $this->responseUnprocessable([
                 'error' => 'Member already exists',
             ]);
         }
-        $board->member()->create([
-            'user_id' => $request->user_id,
-        ]);
-        return $this->responseResourceCreated('Successfully created board', BoardMemberResource::collection($board->member));
+        $board->members()->attach($user, ['role' => 'member']);
+        return $this->responseResourceCreated('Successfully added member', $board->member);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
+
 
     /**
      * Update the specified resource in storage.
@@ -85,12 +75,17 @@ class BoardMemberController extends ResponseController
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Board $board,Request $request)
+    public function destroy(Board $board, Request $request)
     {
-        $this->validate($request,[
+        $this->validateUser($request);
+        $board->member()->where('user_id', $request->user_id)->delete();
+        return $this->responseResourceDeleted('Successfully removed user from the project');
+    }
+
+    private function validateUser($request)
+    {
+        $this->validate($request, [
             'user_id' => 'required|exists:users,id'
         ]);
-        $board->member()->where('user_id',$request->user_id)->delete();
-        return $this->responseResourceDeleted('Successfully removed user from the project');
     }
 }

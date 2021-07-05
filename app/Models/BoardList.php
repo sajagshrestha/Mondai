@@ -9,7 +9,6 @@ class BoardList extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'board_id',
         'name',
         'description',
         'position',
@@ -17,6 +16,6 @@ class BoardList extends Model
 
     public function board()
     {
-        $this->belongsTo(Board::class);
+        return $this->belongsTo(Board::class);
     }
 }

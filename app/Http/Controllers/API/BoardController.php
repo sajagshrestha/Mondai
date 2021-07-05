@@ -34,12 +34,13 @@ class BoardController extends ResponseController
 
     public function store(BoardRequest $request): JsonResponse
     {
-        if ($this->boardService->nameExists($request)) {
+        $user = $request->user();
+        $query = $user->boards();
+        if ($this->boardService->nameExists($request,$query)) {
             return $this->responseUnprocessable([
                 'name' => ['Project already exists. Please select another name'],
             ]);
         }
-        $user = $request->user();
         $request->request->add(['user_id' => $user->id]);
         $board = Board::create($request->all());
         $board->members()->attach($user,['role' => 'owner']);
@@ -55,7 +56,9 @@ class BoardController extends ResponseController
 
     public function update(Board $board, BoardRequest $request)
     {
-        if ($this->boardService->nameExists($request,$board)) {
+        $user = $request->user();
+        $query = $user->boards();
+        if ($this->boardService->nameExists($request,$query)) {
             return $this->responseUnprocessable([
                 'name' => ['Project name already exists. Please select another name'],
             ]);

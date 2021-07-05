@@ -13,16 +13,16 @@ class Board extends Model
 
     public function creator()
     {
-        return $this->belongsTo(User::class,'user_id');
+        return $this->belongsTo(User::class, 'user_id');
     }
 
     public function members()
     {
-        return $this->belongsToMany(User::class, 'board_members',  'board_id', 'user_id')->withTimestamps();
+        return $this->belongsToMany(User::class, 'board_members',  'board_id', 'user_id')->withTimestamps()->withPivot('role');
     }
 
     public function lists()
     {
-        $this->hasMany(BoardList::class);
+        return  $this->hasMany(BoardList::class);
     }
 }

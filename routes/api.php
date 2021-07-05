@@ -29,8 +29,12 @@ Route::get('login/{provider}/callback', [App\Http\Controllers\API\Auth\ProviderL
 Route::resource('boards', App\Http\Controllers\API\BoardController::class)->except(['create', 'edit']);
 
 Route::get('board-member/{board}',[App\Http\Controllers\API\BoardMemberController::class,'index'] );
-Route::post('board-member/create/{board}',[App\Http\Controllers\API\BoardMemberController::class,'store'] );
+Route::get('board-member/invite/{board}',[App\Http\Controllers\API\BoardMemberController::class,'create']);
+Route::post('board-member/create/{board}',[App\Http\Controllers\API\BoardMemberController::class,'store'])->name('member.store');
 Route::delete('board-member/{board}',[App\Http\Controllers\API\BoardMemberController::class,'destroy'] );
 
 
 Route::get('board-list/{board}',[App\Http\Controllers\API\BoardListController::class,'index']);
+Route::post('board-list/{board}',[App\Http\Controllers\API\BoardListController::class,'store']);
+Route::put('board-list/{boardList}',[App\Http\Controllers\API\BoardListController::class,'update']);
+Route::delete('board-list/{boardList}',[App\Http\Controllers\API\BoardListController::class,'destroy']);
