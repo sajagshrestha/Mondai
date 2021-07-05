@@ -7,10 +7,24 @@ use App\Http\Requests\BoardListRequest;
 use App\Http\Resources\BoardListResource;
 use App\Models\Board;
 use App\Models\BoardList;
+use App\Services\BoardService;
 use Illuminate\Http\Request;
 
 class BoardListController extends ResponseController
 {
+
+    /**
+     * @var BoardService
+     */
+    private $boardService;
+
+    public function __construct(BoardService $boardService)
+    {
+        $this->middleware('auth:sanctum');
+        $this->boardService = $boardService;
+    }
+
+
     /**
      * Display a listing of the resource.
      *
@@ -18,8 +32,8 @@ class BoardListController extends ResponseController
      */
     public function index(Board $board)
     {
-        $boardLists = $board->lists()->orderBy('position');
-        return $this->responseSuccess('',[BoardListResource::collection($boardLists)]);
+        $boardLists = $board->lists()->orderBy('position','asc')->get();
+        return $this->responseSuccess('',BoardListResource::collection($boardLists));
     }
 
 
@@ -29,11 +43,16 @@ class BoardListController extends ResponseController
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(BoardListRequest $request)
+    public function store(BoardListRequest $request, Board $board)
     {
-        $boardLists = BoardList::create($request->all());
-        return $this->responseSuccess('',[BoardListResource::collection($boardLists)]);
-
+        $query = $board->lists();
+        if ($this->boardService->nameExists($request, $query)) {
+            return $this->responseUnprocessable([
+                'name' => ['List already exists. Please select another name'],
+            ]);
+        }
+        $boardList = $board->lists()->create($request->all());
+        return $this->responseSuccess('Successfully created list', [new BoardListResource($boardList)]);
     }
 
 
@@ -46,9 +65,15 @@ class BoardListController extends ResponseController
      */
     public function update(BoardListRequest $request, BoardList $boardList)
     {
+        $board = $boardList->board;
+        $query = $board->lists();
+        if ($this->boardService->nameExists($request, $query,$boardList)) {
+            return $this->responseUnprocessable([
+                'name' => ['List already exists. Please select another name'],
+            ]);
+        }
         $boardList->update($request->all());
-        return $this->responseSuccess('',[new BoardListResource($boardList)]);
-
+        return $this->responseSuccess('', [new BoardListResource($boardList)]);
     }
 
     /**

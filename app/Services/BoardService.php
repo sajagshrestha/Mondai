@@ -20,26 +20,17 @@ class BoardService
         $this->board = $board;
     }
 
-    public function nameExists($request, Board $except = null)
+    public function nameExists($request, $query,$except = null)
     {
         $user = $request->user();
-        $board = $user->boards()->where('name', '=', $request->name)->first();
-        if (isset($except) && isset($board)) {
-            if ($except->id === $board->id)
+        $row = $query->where('name', '=', $request->name)->first();
+        if (isset($except) && isset($row)) {
+            if ($except->id === $row->id)
                 return false;
         }
-        if ($board)
+        if ($row)
             return true;
 
         return false;
-    }
-
-    public function memberExists($request,Board $board)
-    {
-        $user = User::find($request->user_id);
-        if($board->member()->where('user_id',$request->user_id)->exists())
-            return true;
-        else
-            return false;
     }
 }
