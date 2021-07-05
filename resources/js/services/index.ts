@@ -7,6 +7,10 @@ export const getAuthToken = () => {
     return `Bearer ${user?.token}`;
 };
 
-export const getAuthHeader = () => ({
-    Authorization: getAuthToken(),
-});
+export const getAuthHeader = () => {
+    const token = getAuthToken();
+
+    return {
+        Authorization: token,
+    };
+};

@@ -5,6 +5,7 @@ import Home from "./home/Home";
 import Nav from "./nav/Nav";
 import Login from "./login/Login";
 import Dashboard from "./dashboard/Dashboard";
+import ProtectedRoute from "./common/ProtectedRoute";
 
 const AppWrapper = styled.div`
     min-height: 100vh;
@@ -28,9 +29,9 @@ const App: React.FC = () => {
                     <Route exact path="/login">
                         <Login />
                     </Route>
-                    <Route exact path="/dashboard">
+                    <ProtectedRoute exact path="/dashboard">
                         <Dashboard />
-                    </Route>
+                    </ProtectedRoute>
                 </Switch>
             </MainWrapper>
         </AppWrapper>
