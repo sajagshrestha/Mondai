@@ -3,7 +3,7 @@
 namespace App\Jobs;
 
 use App\Models\Board;
-use App\Models\BoardMember;
+use App\Models\BoardList;
 use App\Models\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
@@ -36,9 +36,10 @@ class BoardJob implements ShouldQueue
      */
     public function handle()
     {
-        $this->board->member()->create([
-            'user_id' => $this->user->id,
-            'role'=> 'member',
+        $this->board->lists()->saveMany([
+            new BoardList(['name' => 'Todo']),
+            new BoardList(['name' => 'Doing']),
+            new BoardList(['name' => 'Done']),
         ]);
     }
 }
