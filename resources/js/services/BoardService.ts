@@ -8,3 +8,9 @@ export const fetchAllBoards = async () => {
         })
         .then((res) => res.data.data);
 };
+
+export const createBoard = async (formData: FormData) => {
+    return axios.post(`${BASE_URL}/boards`, formData, {
+        headers: getAuthHeader(),
+    });
+};

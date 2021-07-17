@@ -11,6 +11,7 @@ import ProtectedRoute from "./common/ProtectedRoute";
 const AppWrapper = styled.div`
     min-height: 100vh;
     background-color: ${(props) => props.theme.primaryBackground};
+    padding-bottom: 3rem;
 `;
 
 const MainWrapper = styled.div`

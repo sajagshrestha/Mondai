@@ -10,13 +10,14 @@ const DropDownMenuWrapper = styled.div`
     cursor: pointer;
 `;
 const DropDownItem = styled.div`
-    background-color: ${(props) => props.theme.highlightedText};
+    background-color: ${(props) => props.theme.colorOrange};
     padding: 1rem;
     width: 7.5rem;
     text-align: center;
     font-size: 1.1rem;
     color: ${(props) => props.theme.primaryText};
     font-weight: 700;
+    z-index: 2;
 `;
 const DropdownMenu: React.FC<{ handleClose: () => void }> = ({
     handleClose,
