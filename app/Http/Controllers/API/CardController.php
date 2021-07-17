@@ -2,19 +2,30 @@
 
 namespace App\Http\Controllers\API;
 
-use App\Models\Cards;
-use Illuminate\Http\Request;
+use App\Http\Requests\CardRequest;
+use App\Http\Resources\CardResource;
+use App\Models\BoardList;
+use App\Models\Card;
 
 class CardController extends ResponseController
 {
+
+
+    public function __construct()
+    {
+        $this->middleware('auth:sanctum');
+
+    }
+
+
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(BoardList $list)
     {
-        //
+        return $this->responseSuccess('', CardResource::collection($list->cards));
     }
 
     /**
@@ -22,64 +33,49 @@ class CardController extends ResponseController
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function store(CardRequest $request,BoardList $list)
     {
-        //
+        $user = $request->user();
+        $request->request->add(['user_id' => $user->id]);
+        $card = $list->cards()->create($request->all());
+        return $this->responseResourceCreated('Successfully created card',[new CardResource($card)]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
+
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Cards  $cards
+     * @param  \App\Models\Card  $card
      * @return \Illuminate\Http\Response
      */
-    public function show(Cards $cards)
+    public function show(Card $card)
     {
-        //
+        return $this->responseSuccess('',[new CardResource($card)]);
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Cards  $cards
+     * @param  \App\Models\Card  $card
      * @return \Illuminate\Http\Response
      */
-    public function edit(Cards $cards)
+    public function update(Card $card, CardRequest $request)
     {
-        //
+        $card->update($request->all());
+        return $this->responseResourceCreated('Successfully created card',[new CardResource($card)]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Cards  $cards
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Cards $cards)
-    {
-        //
-    }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Cards  $cards
+     * @param  \App\Models\Card  $card
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Cards $cards)
+    public function destroy(Card $card)
     {
-        //
+        $card->delete();
+        return $this->responseResourceCreated('Successfully deleted card',[new CardResource($card)]);
     }
 }

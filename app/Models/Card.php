@@ -8,4 +8,18 @@ use Illuminate\Database\Eloquent\Model;
 class Card extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        'title',
+        'description',
+        'label',
+        'due_date',
+        'board_list_id',
+        'user_id',
+        'assignee_id',
+    ];
+    public function list()
+    {
+        return $this->belongsTo(BoardList::class);
+    }
 }
