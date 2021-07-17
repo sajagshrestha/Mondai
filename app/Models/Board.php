@@ -25,4 +25,6 @@ class Board extends Model
     {
         return  $this->hasMany(BoardList::class);
     }
+
+
 }

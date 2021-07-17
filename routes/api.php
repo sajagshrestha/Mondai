@@ -38,3 +38,10 @@ Route::get('board-list/{board}',[App\Http\Controllers\API\BoardListController::c
 Route::post('board-list/{board}',[App\Http\Controllers\API\BoardListController::class,'store']);
 Route::put('board-list/{boardList}',[App\Http\Controllers\API\BoardListController::class,'update']);
 Route::delete('board-list/{boardList}',[App\Http\Controllers\API\BoardListController::class,'destroy']);
+
+Route::get('card/{list}',[App\Http\Controllers\API\CardController::class,'index']);
+Route::post('card/{list}',[App\Http\Controllers\API\CardController::class,'store']);
+Route::get('board-list/card/{card}',[App\Http\Controllers\API\CardController::class,'show']);
+Route::put('card/{card}',[App\Http\Controllers\API\CardController::class,'update']);
+Route::delete('card/{card}',[App\Http\Controllers\API\CardController::class,'destroy']);
+
