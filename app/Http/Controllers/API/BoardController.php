@@ -44,8 +44,8 @@ class BoardController extends ResponseController
         $request->request->add(['user_id' => $user->id]);
         $board = Board::create($request->all());
         $board->members()->attach($user,['role' => 'owner']);
-        // $boardCreateJob = new BoardJob($user,$board);
-        // $this->dispatch($boardCreateJob);
+        $boardCreateJob = new BoardJob($user,$board);
+        $this->dispatch($boardCreateJob);
         return $this->responseResourceCreated('Successfully created board', [new BoardResource($board)]);
     }
 
