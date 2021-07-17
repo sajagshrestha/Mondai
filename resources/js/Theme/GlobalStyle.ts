@@ -6,6 +6,13 @@ const GlobalStyle = createGlobalStyle`
         padding:0;
         box-sizing:border-box
     }
+    body{
+        color: white;
+        min-height:100vh;
+    }
+    html, body, #root, .App {
+        height: 100%;
+    }
 `;
 
 export default GlobalStyle;

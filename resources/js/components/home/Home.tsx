@@ -24,7 +24,7 @@ const Title = styled.h1`
     color: ${(props) => props.theme.primaryText};
     font-size: 4rem;
     span {
-        color: ${(props) => props.theme.highlightedText};
+        color: ${(props) => props.theme.colorOrange};
     }
     line-height: 5rem;
 `;
@@ -42,6 +42,10 @@ const HeroImgSection = styled.div`
 
 const HeroImg = styled.img`
     width: 35rem;
+`;
+
+const DashboardButton = styled(Button)`
+    font-size: 1.6rem;
 `;
 
 const Home: React.FC = () => {
@@ -63,7 +67,9 @@ const Home: React.FC = () => {
                     throughout your entire development process.
                 </SecondaryTitle>
                 {isLoggedIn ? (
-                    <Button onClick={onGoToDashboard}>Go to Dashboard</Button>
+                    <DashboardButton onClick={onGoToDashboard}>
+                        Go to Dashboard
+                    </DashboardButton>
                 ) : (
                     <GoogleButton />
                 )}

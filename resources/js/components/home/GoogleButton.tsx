@@ -8,7 +8,7 @@ const GoogleButtonWrapper = styled.button`
     align-items: center;
     justify-content: space-around;
     gap: 1.2rem;
-    background-color: ${(props) => props.theme.highlightedText};
+    background-color: ${(props) => props.theme.colorOrange};
     padding: 1.5em 2em;
     cursor: pointer;
     box-shadow: 4px 10px 20px rgba(0, 0, 0, 0.3);
