@@ -5,7 +5,7 @@ import Home from "./home/Home";
 import Nav from "./nav/Nav";
 import Login from "./login/Login";
 import Dashboard from "./dashboard/Dashboard";
-import List from "./list/List";
+import BoardList from "./list/BoardList";
 import ProtectedRoute from "./common/ProtectedRoute";
 
 const AppWrapper = styled.div`
@@ -35,7 +35,7 @@ const App: React.FC = () => {
                         <Dashboard />
                     </ProtectedRoute>
                     <ProtectedRoute exact path="/board/list">
-                        <List />
+                        <BoardList />
                     </ProtectedRoute>
                 </Switch>
             </MainWrapper>

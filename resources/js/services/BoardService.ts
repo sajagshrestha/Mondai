@@ -14,3 +14,11 @@ export const createBoard = async (formData: FormData) => {
         headers: getAuthHeader(),
     });
 };
+
+export const fetchBoardList = async () => {
+    return axios
+    .get(`${BASE_URL}/board-list/3`, {
+        headers: getAuthHeader(),
+    })
+    .then((res) => res.data.data);
+};
