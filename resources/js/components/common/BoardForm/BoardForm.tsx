@@ -29,6 +29,7 @@ interface INOTE_FORM {
     onClose: any;
     formTitle: string;
     buttonLabel: string;
+    edit?: boolean;
 }
 const BoardForm: React.FC<INOTE_FORM> = ({
     initialValues,
@@ -36,6 +37,7 @@ const BoardForm: React.FC<INOTE_FORM> = ({
     onClose,
     formTitle,
     buttonLabel,
+    edit,
 }) => {
     const formik = useFormik({
         initialValues,
@@ -44,7 +46,9 @@ const BoardForm: React.FC<INOTE_FORM> = ({
             const formData = new FormData();
             formData.append("name", values.name);
             formData.append("description", values.description);
-
+            if (edit) {
+                formData.append("_method",'put');
+            }
             onSubmitForm(formData);
         },
     });
