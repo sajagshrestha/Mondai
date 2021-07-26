@@ -19,6 +19,10 @@ import EditBoardForm from "./EditBoardForm";
 import axios from "axios";
 import { BASE_URL, getAuthHeader } from "../../services/index";
 
+import Fab from "../common/Fab";
+import Modal from "../common/Modal";
+import EditBoardForm from "./EditBoardForm";
+
 const BoardListWrapper = styled.div`
     padding: 1rem;
     display: flex;
@@ -42,6 +46,7 @@ const BoardList = () => {
     const [lists, setLists] = useState<any>();
     const { isLoading, data } = useQuery("boards", fetchBoardList);
     const { isCreateBoardOpen } = useReduxSelector((state) => state.modal);
+<<<<<<< HEAD
     useEffect(() => {
         setLists(data);
     }, [data]);
@@ -51,6 +56,10 @@ const BoardList = () => {
         if (!destination) {
             return;
         }
+=======
+
+    const dispatch = useReduxDispatch();
+>>>>>>> wip
 
         // did not move anywhere - can bail early
         if (
