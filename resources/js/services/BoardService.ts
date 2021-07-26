@@ -15,6 +15,12 @@ export const createBoard = async (formData: FormData) => {
     });
 };
 
+export const editBoard = async (formData: FormData) => {
+    return axios.post(`${BASE_URL}/boards/3`, formData, {
+        headers: getAuthHeader(),
+    });
+};
+
 export const fetchBoardList = async () => {
     return axios
     .get(`${BASE_URL}/board-list/3`, {
