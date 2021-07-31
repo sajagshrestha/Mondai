@@ -72,4 +72,6 @@ class BoardController extends ResponseController
         $board->delete();
         return $this->responseResourceDeleted('Successfully deleted board');
     }
+
+    
 }
