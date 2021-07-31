@@ -23,9 +23,9 @@ const CardList = styled.div`
     // padding: 1rem;
 `;
 
-const List: React.FC<{ list: any; index: number }> = ({ list, index }) => {
-    const appendCard = (card: any): void => {
-        list.cards = [...list.cards, card];
+const List: React.FC<any> = ({ list, index, setLists }) => {
+    const appendCard = (newLists: any): void => {
+        setLists(newLists);
     };
 
     return (
