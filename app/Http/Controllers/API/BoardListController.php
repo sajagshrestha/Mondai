@@ -7,6 +7,7 @@ use App\Http\Requests\BoardListRequest;
 use App\Http\Resources\BoardListResource;
 use App\Models\Board;
 use App\Models\BoardList;
+use App\Models\Card;
 use App\Services\BoardService;
 use Illuminate\Http\Request;
 
@@ -32,7 +33,7 @@ class BoardListController extends ResponseController
      */
     public function index(Board $board)
     {
-        $boardLists = $board->lists()->orderBy('position','asc')->get();
+        $boardLists = $board->lists()->with('cards')->orderBy('position','asc')->get();
         return $this->responseSuccess('',BoardListResource::collection($boardLists));
     }
 
@@ -86,5 +87,28 @@ class BoardListController extends ResponseController
     {
         $boardList->delete();
         return $this->responseResourceDeleted('Successfully removed list from the project');
+    }
+
+
+    public function reorder(Request $request)
+    {
+        foreach($request->reorderArray as $index => $reorderArray)
+        {
+            $listId = array_key_first($reorderArray);
+            $list = BoardList::findOrFail($listId);
+            $list->update([
+                'position' => $index,
+            ]);
+
+            foreach($reorderArray[$listId] as $index => $cardId)
+            {
+                $card = Card::findOrFail($cardId);
+                $card->update([
+                    'position' => $index,
+                ]);
+            }
+        }
+
+        return $this->responseSuccess();
     }
 }

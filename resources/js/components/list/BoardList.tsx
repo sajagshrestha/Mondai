@@ -7,10 +7,17 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import EditIcon from "@material-ui/icons/Edit";
 import List from "./List";
 import { fetchBoardList } from "../../services/BoardService";
+import {
+    DragDropContext,
+    Droppable,
+    DroppableProvided,
+} from "react-beautiful-dnd";
 
 import Fab from "../common/Fab";
 import Modal from "../common/Modal";
 import EditBoardForm from "./EditBoardForm";
+import axios from "axios";
+import { BASE_URL, getAuthHeader } from "../../services/index";
 
 const BoardListWrapper = styled.div`
     padding: 1rem;
@@ -32,11 +39,68 @@ const EditButton = styled(IconButton)`
     }
 `;
 const BoardList = () => {
+    const [lists, setLists] = useState<any>();
     const { isLoading, data } = useQuery("boards", fetchBoardList);
     const { isCreateBoardOpen } = useReduxSelector((state) => state.modal);
-
+    useEffect(() => {
+        setLists(data);
+    }, [data]);
     const dispatch = useReduxDispatch();
+    const onDragEnd = (result: any) => {
+        const { destination, source, draggableId, type } = result;
+        if (!destination) {
+            return;
+        }
 
+        // did not move anywhere - can bail early
+        if (
+            source.droppableId === destination.droppableId &&
+            source.index === destination.index
+        ) {
+            return;
+        }
+
+        if (type === "list") {
+            let updatedLists = lists.slice();
+            const removedList = updatedLists.splice(source.index, 1);
+            updatedLists.splice(destination.index, 0, ...removedList);
+            setLists(updatedLists);
+            return;
+        }
+
+        // find the source list and its index
+        const sourceListIndex = lists.findIndex(
+            (list: any) => list.id == source.droppableId
+        );
+
+        const destinationListIndex = lists.findIndex(
+            (list: any) => list.id == destination.droppableId
+        );
+
+        let updatedLists = [...lists];
+
+        const removedCard = updatedLists[sourceListIndex].cards.splice(
+            source.index,
+            1
+        );
+        updatedLists[destinationListIndex].cards.splice(
+            destination.index,
+            0,
+            ...removedCard
+        );
+        setLists(updatedLists);
+
+        const reorderArray = updatedLists.map((list:any) => {
+            const { id, cards } = list;
+            const cardIdArray = cards.map((card:any) => card?.id);
+            return { [id]: cardIdArray };
+        });
+
+        axios
+        .post(`${BASE_URL}/board-list/reorder`,{'reorderArray' : reorderArray}, {
+            headers: getAuthHeader(),
+        });
+    }
     return (
         <BoardListWrapper>
             <ActionWrapper>
@@ -62,11 +126,32 @@ const BoardList = () => {
                 </IconButton>
             </ActionWrapper>
 
-            <Lists>
-                {data?.map((list: any) => (
-                    <List key={list.id} list={list} />
-                ))}
-            </Lists>
+            <DragDropContext onDragEnd={onDragEnd}>
+                <Droppable
+                    droppableId="all-list"
+                    direction="horizontal"
+                    type="list"
+                >
+                    {(provided: DroppableProvided) => (
+                        <Lists
+                            ref={provided.innerRef}
+                            {...provided.droppableProps}
+                        >
+                            {lists
+                                ? lists.map((list: any, index: number) => (
+                                      <List
+                                          key={list.id}
+                                          list={list}
+                                          index={index}
+                                      />
+                                  ))
+                                : ""}
+
+                            {provided.placeholder}
+                        </Lists>
+                    )}
+                </Droppable>
+            </DragDropContext>
         </BoardListWrapper>
     );
 };

@@ -25,7 +25,8 @@ class CardController extends ResponseController
      */
     public function index(BoardList $list)
     {
-        return $this->responseSuccess('', CardResource::collection($list->cards));
+        $cards = $list->cards()->orderBy('position', 'asc')->get();
+        return $this->responseSuccess('', CardResource::collection($cards));
     }
 
     /**

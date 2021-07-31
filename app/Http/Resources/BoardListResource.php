@@ -20,6 +20,7 @@ class BoardListResource extends JsonResource
             'description' => $this->description,
             'position' => $this->position,
             'created_at' => $this->created_at->diffForHumans(),
+            'cards' => $this->cards,
 
         ];
     }

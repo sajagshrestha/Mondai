@@ -34,6 +34,7 @@ Route::post('board-member/create/{board}',[App\Http\Controllers\API\BoardMemberC
 Route::delete('board-member/{board}',[App\Http\Controllers\API\BoardMemberController::class,'destroy'] );
 
 
+Route::post('board-list/reorder',[App\Http\Controllers\API\BoardListController::class,'reorder']);
 Route::get('board-list/{board}',[App\Http\Controllers\API\BoardListController::class,'index']);
 Route::post('board-list/{board}',[App\Http\Controllers\API\BoardListController::class,'store']);
 Route::put('board-list/{boardList}',[App\Http\Controllers\API\BoardListController::class,'update']);

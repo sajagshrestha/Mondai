@@ -17,6 +17,7 @@ class Card extends Model
         'board_list_id',
         'user_id',
         'assignee_id',
+        'position',
     ];
     public function list()
     {
