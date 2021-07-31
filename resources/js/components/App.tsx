@@ -34,7 +34,7 @@ const App: React.FC = () => {
                     <ProtectedRoute exact path="/dashboard">
                         <Dashboard />
                     </ProtectedRoute>
-                    <ProtectedRoute exact path="/board/list">
+                    <ProtectedRoute exact path="/board/list/:id">
                         <BoardList />
                     </ProtectedRoute>
                 </Switch>

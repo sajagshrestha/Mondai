@@ -20,12 +20,14 @@ const StyledAddButton = styled(Button)`
     }
 `;
 const ButtonWrapper = styled.div`
-display: flex;
-justify-content: flex-end;
-
+    display: flex;
+    justify-content: flex-end;
 `;
 
-const AddCard : React.FC<{appendCard: any,list_id:number}>= ({appendCard,list_id}) => {
+const AddCard: React.FC<{ appendCard: any; list_id: number }> = ({
+    appendCard,
+    list_id,
+}) => {
     const [formDisplay, setFormDisplay] = useState(false);
     const [card, setCard] = useState<any>({
         title: "",
@@ -47,8 +49,7 @@ const AddCard : React.FC<{appendCard: any,list_id:number}>= ({appendCard,list_id
                 headers: getAuthHeader(),
             })
             .then((response) => {
-                console.log(response.data.data[0]);
-                appendCard(response.data.data[0]);
+                appendCard(response.data.data);
             })
             .catch((err) => {
                 console.log(err);
@@ -73,7 +74,7 @@ const AddCard : React.FC<{appendCard: any,list_id:number}>= ({appendCard,list_id
                             value={card.title}
                             onChange={onChangeHandler}
                         />
-                        <ButtonWrapper >
+                        <ButtonWrapper>
                             <StyledAddButton
                                 variant="outlined"
                                 color="default"

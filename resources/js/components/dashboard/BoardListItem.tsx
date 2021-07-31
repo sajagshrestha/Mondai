@@ -33,16 +33,17 @@ const BoardOwner = styled.div`
 `;
 
 interface IPROPS {
+    id: number;
     boardName: string;
     boardOwner: string;
 }
 
 const BoardListItem: React.FC<IPROPS> = (props) => {
-    const { boardName, boardOwner } = props;
+    const { id, boardName, boardOwner } = props;
 
     const history = useHistory();
 
-    const redirectToBoard = () => history.push("/board/list");
+    const redirectToBoard = () => history.push(`/board/list/${id}`);
 
     return (
         <BoardListItemWrapper onClick={redirectToBoard}>
