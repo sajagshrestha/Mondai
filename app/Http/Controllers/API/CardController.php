@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Requests\CardRequest;
 use App\Http\Resources\CardResource;
+use App\Http\Resources\BoardListResource;
 use App\Models\BoardList;
 use App\Models\Card;
 
@@ -39,7 +40,8 @@ class CardController extends ResponseController
         $user = $request->user();
         $request->request->add(['user_id' => $user->id]);
         $card = $list->cards()->create($request->all());
-        return $this->responseResourceCreated('Successfully created card',[new CardResource($card)]);
+        $lists =$list->board->lists()->with('cards')->orderBy('position','asc')->get();
+        return $this->responseResourceCreated('Successfully created card',BoardListResource::collection($lists));
     }
 
 

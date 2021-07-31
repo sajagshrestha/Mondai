@@ -51,6 +51,7 @@ const Dashboard = () => {
                 {data?.map((board: any) => (
                     <BoardListItem
                         key={board.id}
+                        id={board.id}
                         boardOwner={board.owner.name}
                         boardName={board.name}
                     />

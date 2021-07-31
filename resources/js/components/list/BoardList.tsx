@@ -1,12 +1,17 @@
 import React, { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
 import { useReduxDispatch, useReduxSelector } from "../../reducers";
-import { useQuery } from "react-query";
+import { useQuery, useMutation, useQueryClient } from "react-query";
 import styled from "styled-components";
 import IconButton from "@material-ui/core/IconButton";
 import DeleteIcon from "@material-ui/icons/Delete";
 import EditIcon from "@material-ui/icons/Edit";
 import List from "./List";
-import { fetchBoardList } from "../../services/BoardService";
+import {
+    fetchBoardList,
+    updateBoardList,
+    fetchBoard,
+} from "../../services/BoardService";
 import {
     DragDropContext,
     Droppable,
@@ -18,7 +23,6 @@ import Modal from "../common/Modal";
 import EditBoardForm from "./EditBoardForm";
 import axios from "axios";
 import { BASE_URL, getAuthHeader } from "../../services/index";
-
 
 const BoardListWrapper = styled.div`
     padding: 1rem;
@@ -40,8 +44,17 @@ const EditButton = styled(IconButton)`
     }
 `;
 const BoardList = () => {
-    const [lists, setLists] = useState<any>();
-    const { isLoading, data } = useQuery("boards", fetchBoardList);
+    const [lists, setLists] = useState<any>([]);
+    const { id } = useParams<any>();
+    const { isLoading, data } = useQuery(["board-list", id], () =>
+        fetchBoardList(id)
+    );
+    const boardData = useQuery<any>(["board", id], () => fetchBoard(id), {
+        initialData: { name: "", description: "" },
+    });
+    const queryClient = useQueryClient();
+    const { mutateAsync } = useMutation(updateBoardList);
+
     const { isCreateBoardOpen } = useReduxSelector((state) => state.modal);
     const dispatch = useReduxDispatch();
 
@@ -49,13 +62,11 @@ const BoardList = () => {
         setLists(data);
     }, [data]);
 
-
-    const onDragEnd = (result: any) => {
+    const onDragEnd = async (result: any) => {
         const { destination, source, draggableId, type } = result;
         if (!destination) {
             return;
         }
-
 
         // did not move anywhere - can bail early
         if (
@@ -95,17 +106,22 @@ const BoardList = () => {
         );
         setLists(updatedLists);
 
-        const reorderArray = updatedLists.map((list:any) => {
+        const reorderArray = updatedLists.map((list: any) => {
             const { id, cards } = list;
-            const cardIdArray = cards.map((card:any) => card?.id);
+            const cardIdArray = cards.map((card: any) => card?.id);
             return { [id]: cardIdArray };
         });
 
-        axios
-        .post(`${BASE_URL}/board-list/reorder`,{'reorderArray' : reorderArray}, {
-            headers: getAuthHeader(),
-        });
-    }
+        try {
+            await mutateAsync(reorderArray);
+            queryClient.invalidateQueries("board-list");
+        } catch (err) {
+            console.log(err);
+        }
+    };
+
+    if (isLoading && boardData.isLoading) return <h1>Loading</h1>;
+
     return (
         <BoardListWrapper>
             <ActionWrapper>
@@ -124,7 +140,7 @@ const BoardList = () => {
                         dispatch({ type: "CLOSE_CREATE_BOARD_MODAL" });
                     }}
                 >
-                    <EditBoardForm board={null} />
+                    <EditBoardForm board={boardData.data} />
                 </Modal>
                 <IconButton aria-label="delete" color="secondary">
                     <DeleteIcon />
@@ -148,6 +164,8 @@ const BoardList = () => {
                                           key={list.id}
                                           list={list}
                                           index={index}
+                                          lists={lists}
+                                          setLists={setLists}
                                       />
                                   ))
                                 : ""}
