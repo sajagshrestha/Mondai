@@ -38,8 +38,10 @@ class CardController extends ResponseController
     public function store(CardRequest $request,BoardList $list)
     {
         $user = $request->user();
-        $request->request->add(['user_id' => $user->id]);
-        $card = $list->cards()->create($request->all());
+        $card = $list->cards()->create([
+            'title' => $request->title,
+            'user_id' => $user->id
+        ]);
         $lists =$list->board->lists()->with('cards')->orderBy('position','asc')->get();
         return $this->responseResourceCreated('Successfully created card',BoardListResource::collection($lists));
     }
@@ -65,8 +67,10 @@ class CardController extends ResponseController
      */
     public function update(Card $card, CardRequest $request)
     {
+        $list = $card->list;
         $card->update($request->all());
-        return $this->responseResourceCreated('Successfully created card',[new CardResource($card)]);
+        $lists =$list->board->lists()->with('cards')->orderBy('position','asc')->get();
+        return $this->responseSuccess('',BoardListResource::collection($lists));
     }
 
 
@@ -78,7 +82,9 @@ class CardController extends ResponseController
      */
     public function destroy(Card $card)
     {
+        $list = $card->list;
         $card->delete();
-        return $this->responseResourceCreated('Successfully deleted card',[new CardResource($card)]);
+        $lists =$list->board->lists()->with('cards')->orderBy('position','asc')->get();
+        return $this->responseSuccess('',BoardListResource::collection($lists));
     }
 }

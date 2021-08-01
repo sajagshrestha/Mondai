@@ -36,10 +36,11 @@ interface IPROPS {
     id: number;
     boardName: string;
     boardOwner: string;
+    ownerAvatar: string | undefined;
 }
 
 const BoardListItem: React.FC<IPROPS> = (props) => {
-    const { id, boardName, boardOwner } = props;
+    const { id, boardName, boardOwner, ownerAvatar } = props;
 
     const history = useHistory();
 
@@ -49,8 +50,10 @@ const BoardListItem: React.FC<IPROPS> = (props) => {
         <BoardListItemWrapper onClick={redirectToBoard}>
             <BoardName>{boardName}</BoardName>
             <BoardOwner>
-                <Avatar>{nameUtlis.getInitials(boardOwner)}</Avatar>
                 {boardOwner}
+                <Avatar src={ownerAvatar}>
+                    {nameUtlis.getInitials(boardOwner)}
+                </Avatar>
             </BoardOwner>
         </BoardListItemWrapper>
     );
