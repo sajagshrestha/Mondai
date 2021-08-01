@@ -29,6 +29,7 @@ export const StyledAvatar = styled(Avatar)`
     &&& {
         height: 25px;
         width: 25px;
+        font-size: 12px;
     }
 `;
 

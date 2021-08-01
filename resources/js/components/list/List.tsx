@@ -26,6 +26,10 @@ const ListContainer = styled.div`
     padding: 1rem 1.2rem;
     min-width: 400px;
     padding-top: 0;
+<<<<<<< HEAD
+=======
+    min-width: 350px;
+>>>>>>> add new list
     margin-right: 1rem;
 `;
 const ListTitle = styled.div`
@@ -61,7 +65,6 @@ const List: React.FC<any> = ({ list, index, setLists }) => {
     };
 
     const handleClose = () => {
-        setDeleteList(true);
         setAnchorEl(null);
     };
 
@@ -147,7 +150,12 @@ const List: React.FC<any> = ({ list, index, setLists }) => {
                                 open={Boolean(anchorEl)}
                                 onClose={handleClose}
                             >
-                                <MenuItem onClick={handleClose}>
+                                <MenuItem
+                                    onClick={() => {
+                                        handleClose();
+                                        setDeleteList(true);
+                                    }}
+                                >
                                     Delete
                                 </MenuItem>
                             </Menu>
