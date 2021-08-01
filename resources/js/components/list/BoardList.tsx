@@ -15,7 +15,6 @@ import {
 } from "react-beautiful-dnd";
 import BoardInfo from "./BoardInfo";
 
-
 const BoardListWrapper = styled.div`
     padding: 1rem;
     display: flex;
@@ -26,17 +25,15 @@ const Lists = styled.div`
     align-items: flex-start;
 `;
 
-
 const BoardList = () => {
     const [lists, setLists] = useState<any>([]);
     const { id } = useParams<any>();
     const { isLoading, data } = useQuery(["board-list", id], () =>
         fetchBoardList(id)
     );
-   
+
     const queryClient = useQueryClient();
     const { mutateAsync } = useMutation(updateBoardList);
-
 
     useEffect(() => {
         setLists(data);
@@ -97,7 +94,7 @@ const BoardList = () => {
         }
     };
 
-    if (isLoading ) return <h1>Loading</h1>;
+    if (isLoading) return <h1>Loading</h1>;
 
     return (
         <BoardListWrapper>

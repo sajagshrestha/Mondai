@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import IconButton from "@material-ui/core/IconButton";
+import MuiIconButton from "@material-ui/core/IconButton";
 import DeleteIcon from "@material-ui/icons/Delete";
 import InfoIcon from "@material-ui/icons/Info";
 import EditIcon from "@material-ui/icons/Edit";
@@ -31,11 +31,17 @@ const DetailWrapper = styled.div`
     min-height: 100vh;
 `;
 
-const EditButton = styled(IconButton)`
+const EditButton = styled(MuiIconButton)`
     &&& {
-        color: green;
+        color: ${({ theme }) => theme.colorOrange};
         height: 5px;
         width: 5px;
+    }
+`;
+
+const IconButton = styled(MuiIconButton)`
+    &&.MuiIconButton-root {
+        color: ${({ theme }) => theme.colorOrange};
     }
 `;
 
@@ -60,7 +66,8 @@ const BoardInfo = () => {
     const handleInviteClick = async (event: any) => {
         try {
             const inviteLink = await fetchInviteLink(id);
-            navigator.clipboard.writeText(inviteLink);
+            const filteredLink = inviteLink.replace("/api", "");
+            navigator.clipboard.writeText(filteredLink);
         } catch (err) {
             console.log(err);
         }

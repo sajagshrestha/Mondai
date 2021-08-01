@@ -23,18 +23,21 @@ import ConfirmationDialog from "../common/ConfirmationDialog/ConfirmationDialog"
 const ListContainer = styled.div`
     background: #151514;
     color: #ffffff;
-    padding: 1rem;
+    padding: 1rem 1.2rem;
+    min-width: 400px;
     padding-top: 0;
-    width: 350px;
     margin-right: 1rem;
 `;
 const ListTitle = styled.div`
     padding: 1rem 0;
     display: flex;
     justify-content: space-between;
+    align-items: center;
 `;
 const CardList = styled.div`
-    // padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
 `;
 const ListOptions = styled(MoreHorizIcon)`
     color: #fff;

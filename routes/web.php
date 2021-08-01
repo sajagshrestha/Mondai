@@ -18,5 +18,3 @@ use Illuminate\Support\Facades\Route;
 // });
 
 Route::view('/{any}', 'welcome')->where('any', '.*');
-
-Route::post('invite/{board}',[App\Http\Controllers\API\BoardMemberController::class,'store'])->name('member.store');
