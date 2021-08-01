@@ -5,6 +5,10 @@ export const addMember = async (
     boardId: string,
     signature: string | string[]
 ) =>
-    axios.post(`${BASE_URL}/invite/${boardId}?signature=${signature}`, {
-        headers: getAuthHeader(),
-    });
+    axios.post(
+        `${BASE_URL}/invite/${boardId}?signature=${signature}`,
+        {},
+        {
+            headers: getAuthHeader(),
+        }
+    );

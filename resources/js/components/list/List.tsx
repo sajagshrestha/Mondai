@@ -39,6 +39,7 @@ const CardList = styled.div`
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
+    min-height: 10px;
 `;
 const ListOptions = styled(MoreHorizIcon)`
     color: #fff;

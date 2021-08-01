@@ -22,8 +22,32 @@ const BoardListWrapper = styled.div`
     flex-direction: column;
 `;
 const Lists = styled.div`
+    min-height: 70vh;
     display: flex;
     align-items: flex-start;
+    white-space: nowrap;
+    margin-bottom: 8px;
+    overflow-x: auto;
+    overflow-y: hidden;
+
+    /* width */
+    ::-webkit-scrollbar {
+        width: 7px;
+        height: 10px;
+        cursor: pointer;
+    }
+
+    /* Track */
+    ::-webkit-scrollbar-track {
+        border: 2px solid ${({ theme }) => theme.colorDark500};
+        border-radius: 8px;
+    }
+
+    /* Handle */
+    ::-webkit-scrollbar-thumb {
+        background: ${({ theme }) => theme.colorOrange};
+        border-radius: 10px;
+    }
 `;
 
 const BoardList = () => {
@@ -124,11 +148,15 @@ const BoardList = () => {
                                 : ""}
 
                             {provided.placeholder}
-                            <AddList appendList={(newLists:any) => setLists(newLists)} board_id={id} />
+                            <AddList
+                                appendList={(newLists: any) =>
+                                    setLists(newLists)
+                                }
+                                board_id={id}
+                            />
                         </Lists>
                     )}
                 </Droppable>
-
             </DragDropContext>
         </BoardListWrapper>
     );
