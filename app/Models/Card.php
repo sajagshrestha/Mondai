@@ -23,4 +23,9 @@ class Card extends Model
     {
         return $this->belongsTo(BoardList::class);
     }
+
+    public function assigned_to()
+    {
+        return $this->belongsTo(User::class,'assignee_id');
+    }
 }

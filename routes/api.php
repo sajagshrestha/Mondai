@@ -30,6 +30,7 @@ Route::resource('boards', App\Http\Controllers\API\BoardController::class)->exce
 
 Route::get('board-member/{board}',[App\Http\Controllers\API\BoardMemberController::class,'index'] );
 Route::get('board-member/invite/{board}',[App\Http\Controllers\API\BoardMemberController::class,'create']);
+Route::post('board-member/create/{board}',[App\Http\Controllers\API\BoardMemberController::class,'store'])->name('member.store');
 Route::delete('board-member/{board}',[App\Http\Controllers\API\BoardMemberController::class,'destroy'] );
 
 

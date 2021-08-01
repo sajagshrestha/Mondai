@@ -53,7 +53,8 @@ class BoardListController extends ResponseController
             ]);
         }
         $boardList = $board->lists()->create($request->all());
-        return $this->responseSuccess('Successfully created list', [new BoardListResource($boardList)]);
+        $lists = $board->lists;
+        return $this->responseSuccess('',BoardListResource::collection($lists));
     }
 
 

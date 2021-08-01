@@ -14,6 +14,7 @@ import {
     DroppableProvided,
 } from "react-beautiful-dnd";
 import BoardInfo from "./BoardInfo";
+import AddList from "./AddList";
 
 const BoardListWrapper = styled.div`
     padding: 1rem;
@@ -123,9 +124,11 @@ const BoardList = () => {
                                 : ""}
 
                             {provided.placeholder}
+                            <AddList appendList={(newLists:any) => setLists(newLists)} board_id={id} />
                         </Lists>
                     )}
                 </Droppable>
+
             </DragDropContext>
         </BoardListWrapper>
     );
