@@ -6,13 +6,16 @@ import Modal from "../Modal";
 const ConfirmationDialogWrapper = styled.div`
     display: grid;
     grid-gap: 1rem;
-    padding: 3rem;
+    padding: 2.3rem;
     width: 40rem;
     background-color: ${(props) => props.theme.primaryBackground};
 `;
 
-const ConfirmationDialogMessage = styled.h1`
+const ConfirmationDialogMessage = styled.p`
     color: ${(props) => props.theme.primaryText};
+    font-size: 1.2rem;
+    margin-bottom: 2.5rem;
+    white-space: initial;
 `;
 
 const ButtonSection = styled.div`
@@ -22,7 +25,7 @@ const ButtonSection = styled.div`
 `;
 
 const ConfirmationDialogTitle = styled.h1`
-    font-size: 2.2rem;
+    font-size: 2rem;
     color: ${(props) => props.theme.colorOrange};
 `;
 
