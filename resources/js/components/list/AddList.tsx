@@ -93,7 +93,7 @@ const AddList: React.FC<{ appendList: any; board_id: number }> = ({
                 </div>
             ) : (
                 <StyledAddButton fullWidth onClick={toggleHandler}>
-                    + Add another list
+                    + Add new list
                 </StyledAddButton>
             )}
         </AddListContainer>
