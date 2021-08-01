@@ -44,3 +44,10 @@ export const fetchBoard = async (id: number) => {
         .get(`${BASE_URL}/boards/${id}`, { headers: getAuthHeader() })
         .then((res) => res.data.data[0]);
 };
+
+export const fetchInviteLink = async (id: number) => {
+    return axios
+        .get(`${BASE_URL}/board-member/invite/${id}`, { headers: getAuthHeader() })
+        .then((res) => res.data.data);
+};
+

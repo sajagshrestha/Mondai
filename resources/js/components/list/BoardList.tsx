@@ -1,11 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { useReduxDispatch, useReduxSelector } from "../../reducers";
 import { useQuery, useMutation, useQueryClient } from "react-query";
 import styled from "styled-components";
-import IconButton from "@material-ui/core/IconButton";
-import DeleteIcon from "@material-ui/icons/Delete";
-import EditIcon from "@material-ui/icons/Edit";
 import List from "./List";
 import {
     fetchBoardList,
@@ -17,12 +13,8 @@ import {
     Droppable,
     DroppableProvided,
 } from "react-beautiful-dnd";
+import BoardInfo from "./BoardInfo";
 
-import Fab from "../common/Fab";
-import Modal from "../common/Modal";
-import EditBoardForm from "./EditBoardForm";
-import axios from "axios";
-import { BASE_URL, getAuthHeader } from "../../services/index";
 
 const BoardListWrapper = styled.div`
     padding: 1rem;
@@ -34,29 +26,17 @@ const Lists = styled.div`
     align-items: flex-start;
 `;
 
-const ActionWrapper = styled.div`
-    margin-left: auto;
-`;
 
-const EditButton = styled(IconButton)`
-    &&& {
-        color: green;
-    }
-`;
 const BoardList = () => {
     const [lists, setLists] = useState<any>([]);
     const { id } = useParams<any>();
     const { isLoading, data } = useQuery(["board-list", id], () =>
         fetchBoardList(id)
     );
-    const boardData = useQuery<any>(["board", id], () => fetchBoard(id), {
-        initialData: { name: "", description: "" },
-    });
+   
     const queryClient = useQueryClient();
     const { mutateAsync } = useMutation(updateBoardList);
 
-    const { isCreateBoardOpen } = useReduxSelector((state) => state.modal);
-    const dispatch = useReduxDispatch();
 
     useEffect(() => {
         setLists(data);
@@ -76,35 +56,32 @@ const BoardList = () => {
             return;
         }
 
+        let updatedLists = lists.slice();
         if (type === "list") {
-            let updatedLists = lists.slice();
             const removedList = updatedLists.splice(source.index, 1);
             updatedLists.splice(destination.index, 0, ...removedList);
             setLists(updatedLists);
-            return;
+        } else {
+            // find the source list and its index
+            const sourceListIndex = lists.findIndex(
+                (list: any) => list.id == source.droppableId
+            );
+
+            const destinationListIndex = lists.findIndex(
+                (list: any) => list.id == destination.droppableId
+            );
+
+            const removedCard = updatedLists[sourceListIndex].cards.splice(
+                source.index,
+                1
+            );
+            updatedLists[destinationListIndex].cards.splice(
+                destination.index,
+                0,
+                ...removedCard
+            );
+            setLists(updatedLists);
         }
-
-        // find the source list and its index
-        const sourceListIndex = lists.findIndex(
-            (list: any) => list.id == source.droppableId
-        );
-
-        const destinationListIndex = lists.findIndex(
-            (list: any) => list.id == destination.droppableId
-        );
-
-        let updatedLists = [...lists];
-
-        const removedCard = updatedLists[sourceListIndex].cards.splice(
-            source.index,
-            1
-        );
-        updatedLists[destinationListIndex].cards.splice(
-            destination.index,
-            0,
-            ...removedCard
-        );
-        setLists(updatedLists);
 
         const reorderArray = updatedLists.map((list: any) => {
             const { id, cards } = list;
@@ -120,33 +97,11 @@ const BoardList = () => {
         }
     };
 
-    if (isLoading && boardData.isLoading) return <h1>Loading</h1>;
+    if (isLoading ) return <h1>Loading</h1>;
 
     return (
         <BoardListWrapper>
-            <ActionWrapper>
-                <EditButton
-                    aria-label="edit"
-                    onClick={() => {
-                        dispatch({ type: "OPEN_CREATE_BOARD_MODAL" });
-                    }}
-                >
-                    <EditIcon />
-                </EditButton>
-
-                <Modal
-                    isOpen={isCreateBoardOpen}
-                    onClose={() => {
-                        dispatch({ type: "CLOSE_CREATE_BOARD_MODAL" });
-                    }}
-                >
-                    <EditBoardForm board={boardData.data} />
-                </Modal>
-                <IconButton aria-label="delete" color="secondary">
-                    <DeleteIcon />
-                </IconButton>
-            </ActionWrapper>
-
+            <BoardInfo />
             <DragDropContext onDragEnd={onDragEnd}>
                 <Droppable
                     droppableId="all-list"

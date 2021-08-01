@@ -23,7 +23,7 @@ class Board extends Model
 
     public function lists()
     {
-        return  $this->hasMany(BoardList::class)->orderBy('position');
+        return  $this->hasMany(BoardList::class)->orderBy('position','asc')->with('cards');
     }
 
 

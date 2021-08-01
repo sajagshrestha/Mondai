@@ -74,7 +74,8 @@ class BoardListController extends ResponseController
             ]);
         }
         $boardList->update($request->all());
-        return $this->responseSuccess('', [new BoardListResource($boardList)]);
+        $lists = $board->lists;
+        return $this->responseSuccess('',BoardListResource::collection($lists));
     }
 
     /**
@@ -85,26 +86,28 @@ class BoardListController extends ResponseController
      */
     public function destroy(BoardList $boardList)
     {
+        $board = $boardList->board;
         $boardList->delete();
-        return $this->responseResourceDeleted('Successfully removed list from the project');
+        $lists = $board->lists;
+        return $this->responseSuccess('',BoardListResource::collection($lists));
     }
 
 
     public function reorder(Request $request)
     {
-        foreach($request->reorderArray as $index => $reorderArray)
+        foreach($request->reorderArray as $listIndex => $reorderArray)
         {
             $listId = array_key_first($reorderArray);
             $list = BoardList::findOrFail($listId);
             $list->update([
-                'position' => $index,
+                'position' => $listIndex,
             ]);
-
-            foreach($reorderArray[$listId] as $index => $cardId)
+            foreach($reorderArray[$listId] as $cardIndex => $cardId)
             {
                 $card = Card::findOrFail($cardId);
                 $card->update([
-                    'position' => $index,
+                    'board_list_id' => $listId,
+                    'position' => $cardIndex,
                 ]);
             }
         }
