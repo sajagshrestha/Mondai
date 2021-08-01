@@ -68,8 +68,18 @@ const BoardInfo = () => {
             const inviteLink = await fetchInviteLink(id);
             const filteredLink = inviteLink.replace("/api", "");
             navigator.clipboard.writeText(filteredLink);
+            dispatch({
+                type: "OPEN_SNACKBAR",
+                severity: "success",
+                message: "Invite Link Copied to Clipboard",
+            });
         } catch (err) {
             console.log(err);
+            dispatch({
+                type: "OPEN_SNACKBAR",
+                severity: "error",
+                message: "Invite Link Copy failed",
+            });
         }
     };
     const deleteBoardHandler = () => {
