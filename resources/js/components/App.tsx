@@ -8,6 +8,7 @@ import Dashboard from "./dashboard/Dashboard";
 import BoardList from "./list/BoardList";
 import ProtectedRoute from "./common/ProtectedRoute";
 import Invite from "./invite/Invite";
+import Snackbar from "./common/Snackbar";
 
 const AppWrapper = styled.div`
     min-height: 100vh;
@@ -42,6 +43,7 @@ const App: React.FC = () => {
                         <Invite />
                     </Route>
                 </Switch>
+                <Snackbar />
             </MainWrapper>
         </AppWrapper>
     );
