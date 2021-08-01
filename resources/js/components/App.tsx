@@ -7,6 +7,7 @@ import Login from "./login/Login";
 import Dashboard from "./dashboard/Dashboard";
 import BoardList from "./list/BoardList";
 import ProtectedRoute from "./common/ProtectedRoute";
+import Invite from "./invite/Invite";
 
 const AppWrapper = styled.div`
     min-height: 100vh;
@@ -28,15 +29,18 @@ const App: React.FC = () => {
                     <Route exact path="/">
                         <Home />
                     </Route>
-                    <Route exact path="/login">
+                    <Route path="/login">
                         <Login />
                     </Route>
-                    <ProtectedRoute exact path="/dashboard">
+                    <ProtectedRoute path="/dashboard">
                         <Dashboard />
                     </ProtectedRoute>
-                    <ProtectedRoute exact path="/board/list/:id">
+                    <ProtectedRoute path="/board/list/:id">
                         <BoardList />
                     </ProtectedRoute>
+                    <Route path="/invite/:boardId">
+                        <Invite />
+                    </Route>
                 </Switch>
             </MainWrapper>
         </AppWrapper>

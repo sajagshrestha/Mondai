@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useHistory } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import styled from "styled-components";
 import logoPath from "../../assets/logo.svg";
 import { useReduxSelector } from "../../reducers";
@@ -22,7 +22,17 @@ const Logo = styled.img`
     cursor: pointer;
 `;
 
-const NavLinksSection = styled.div``;
+const NavLinksSection = styled.div`
+    display: flex;
+    align-items: center;
+    gap: 4rem;
+`;
+
+const NavLink = styled(Link)`
+    cursor: pointer;
+    font-size: 1.2rem;
+    color: ${(props) => props.theme.colorOrange};
+`;
 
 const Nav: React.FC = () => {
     const { userName, isLoggedIn } = useReduxSelector((state) => state.user);
@@ -35,13 +45,20 @@ const Nav: React.FC = () => {
             <Logo src={logoPath} alt="logo" onClick={() => history.push("/")} />
             <NavLinksSection>
                 {isLoggedIn && (
-                    <UserMenuButton
-                        onClick={() => setOpen(!isOpen)}
-                        variant="outlined"
-                        endIcon={<ExpandMoreOutlinedIcon />}
-                    >
-                        {userName}
-                    </UserMenuButton>
+                    <>
+                        <NavLink to="/dashboard">Dashboard</NavLink>
+
+                        <UserMenuButton
+                            onClick={() => {
+                                console.log("open");
+                                setOpen(true);
+                            }}
+                            variant="outlined"
+                            endIcon={<ExpandMoreOutlinedIcon />}
+                        >
+                            {userName}
+                        </UserMenuButton>
+                    </>
                 )}
                 {isOpen ? (
                     <DropdownMenu

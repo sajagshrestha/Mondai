@@ -26,12 +26,13 @@ const DropdownMenu: React.FC<{ handleClose: () => void }> = ({
 
     const dropDownRef = useRef(null);
 
+    const clickOutsideListener = (e: MouseEvent) => {
+        if (e.target !== dropDownRef.current) {
+            handleClose();
+        }
+    };
+
     useEffect(() => {
-        const clickOutsideListener = (e: MouseEvent) => {
-            if (e.target !== dropDownRef.current) {
-                handleClose();
-            }
-        };
         document.addEventListener("click", clickOutsideListener);
         return () => {
             document.removeEventListener("click", clickOutsideListener);

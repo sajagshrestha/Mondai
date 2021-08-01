@@ -45,3 +45,4 @@ Route::get('board-list/card/{card}',[App\Http\Controllers\API\CardController::cl
 Route::put('card/{card}',[App\Http\Controllers\API\CardController::class,'update']);
 Route::delete('card/{card}',[App\Http\Controllers\API\CardController::class,'destroy']);
 
+Route::post('invite/{board}',[App\Http\Controllers\API\BoardMemberController::class,'store'])->name('member.store');
