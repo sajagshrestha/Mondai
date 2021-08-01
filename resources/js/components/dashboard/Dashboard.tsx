@@ -54,6 +54,7 @@ const Dashboard = () => {
                         id={board.id}
                         boardOwner={board.owner.name}
                         boardName={board.name}
+                        ownerAvatar={board.owner.avatar}
                     />
                 ))}
             </ProjectsSection>

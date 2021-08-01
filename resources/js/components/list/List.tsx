@@ -24,9 +24,9 @@ const ListContainer = styled.div`
     background: #151514;
     color: #ffffff;
     padding: 1rem 1.2rem;
-    min-width: 400px;
-    padding-top: 0;
     min-width: 350px;
+    max-width:350px;
+    padding-top: 0;
     margin-right: 1rem;
 `;
 const ListTitle = styled.div`
@@ -142,7 +142,6 @@ const List: React.FC<any> = ({ list, index, setLists }) => {
                                 <ListOptions />
                             </Button>
                             <Menu
-                                id="simple-menu"
                                 anchorEl={anchorEl}
                                 keepMounted
                                 open={Boolean(anchorEl)}
@@ -176,7 +175,7 @@ const List: React.FC<any> = ({ list, index, setLists }) => {
                             >
                                 {list.cards.map((c: any, index: number) => (
                                     <div key={c.id}>
-                                        <Card card={c} index={index} />
+                                        <Card card={c} index={index} updateList={appendCard} />
                                     </div>
                                 ))}
                                 {provided.placeholder}

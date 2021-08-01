@@ -31,7 +31,6 @@ const AddCard: React.FC<{ appendCard: any; list_id: number }> = ({
     const [formDisplay, setFormDisplay] = useState(false);
     const [card, setCard] = useState<any>({
         title: "",
-        user_id: 1,
     });
     const toggleHandler = () => {
         setFormDisplay(!formDisplay);

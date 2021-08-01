@@ -45,6 +45,24 @@ const IconButton = styled(MuiIconButton)`
     }
 `;
 
+const InfoContainer = styled.div`
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    .members {
+        display: flex;
+        justify-content: space-between;
+        a{
+            color: ${props => props.theme.colorOrange}
+        }
+
+    }
+    span{
+        color: ${props => props.theme.colorOrange};
+        font-weight: bold;
+        font-size: 1.1rem;
+    }
+`;
 const BoardInfo = () => {
     const [drawerToggle, setDrawerToggle] = useState(false);
     const [deleteBoard, setDeleteBoard] = useState(false);
@@ -145,25 +163,24 @@ const BoardInfo = () => {
                         title="Delete confirmation"
                         onConfirm={deleteBoardHandler}
                     />
-                    <div>Title :</div>
-                    <div>{boardData.data.name}</div>
-                    <div>Description :</div>
-                    <div>{boardData.data.description}</div>
-                    <div>Created :</div>
-                    <div>{boardData.data.created_at}</div>
-                    <div>Created by:</div>
-                    <div>{boardData.data.owner.name}</div>
-                    <div>
-                        Members
-                        <Link href="#" onClick={handleInviteClick}>
-                            invite
-                        </Link>
-                    </div>
-                    <div>
-                        {boardData.data.members.map(
-                            (member: any) => member.name
-                        )}
-                    </div>
+                    <InfoContainer>
+                        <div><span>Title : </span> {boardData.data.name}</div>
+                        <div><span>Description :</span></div>
+                        <div>{boardData.data.description}</div>
+                        <div><span>Created : </span> {boardData.data.created_at}</div>
+                        <div><span>Created by: </span> {boardData.data.owner.name}</div>
+                        <div className="members">
+                            <span>Members </span>
+                            <a href="#" onClick={handleInviteClick}>
+                                invite
+                            </a>
+                        </div>
+                        <div>
+                            {boardData.data.members.map((member: any) => (
+                                <div>{member.name}</div>
+                            ))}
+                        </div>
+                    </InfoContainer>
                 </DetailWrapper>
             </Drawer>
         </ActionWrapper>
