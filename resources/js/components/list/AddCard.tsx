@@ -92,7 +92,7 @@ const AddCard: React.FC<{ appendCard: any; list_id: number }> = ({
                 </div>
             ) : (
                 <StyledAddButton fullWidth onClick={toggleHandler}>
-                    + Add another card
+                    + Add new card
                 </StyledAddButton>
             )}
         </AddCardContainer>
