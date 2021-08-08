@@ -52,13 +52,12 @@ const InfoContainer = styled.div`
     .members {
         display: flex;
         justify-content: space-between;
-        a{
-            color: ${props => props.theme.colorOrange}
+        a {
+            color: ${(props) => props.theme.colorOrange};
         }
-
     }
-    span{
-        color: ${props => props.theme.colorOrange};
+    span {
+        color: ${(props) => props.theme.colorOrange};
         font-weight: bold;
         font-size: 1.1rem;
     }
@@ -70,6 +69,7 @@ const BoardInfo = () => {
     const dispatch = useReduxDispatch();
     const { id } = useParams<any>();
     const history = useHistory();
+    const { userId } = useReduxSelector((state) => state.user);
 
     const boardData = useQuery<any>(["board", id], () => fetchBoard(id), {
         initialData: {
@@ -117,7 +117,7 @@ const BoardInfo = () => {
                 });
                 history.push("/dashboard");
             })
-            .catch(err => {
+            .catch((err) => {
                 dispatch({
                     type: "OPEN_SNACKBAR",
                     severity: "error",
@@ -142,54 +142,83 @@ const BoardInfo = () => {
                 }}
             >
                 <DetailWrapper>
-                    <EditButton
-                        aria-label="edit"
-                        onClick={() => {
-                            dispatch({ type: "OPEN_CREATE_BOARD_MODAL" });
-                        }}
-                    >
-                        <EditIcon />
-                    </EditButton>
+                    {userId === boardData.data.owner.id ? (
+                        <>
+                            <EditButton
+                                aria-label="edit"
+                                onClick={() => {
+                                    dispatch({
+                                        type: "OPEN_CREATE_BOARD_MODAL",
+                                    });
+                                }}
+                            >
+                                <EditIcon />
+                            </EditButton>
 
-                    <Modal
-                        isOpen={isCreateBoardOpen}
-                        onClose={() => {
-                            dispatch({ type: "CLOSE_CREATE_BOARD_MODAL" });
-                        }}
-                    >
-                        <EditBoardForm board={boardData.data} />
-                    </Modal>
-                    <IconButton
-                        aria-label="delete"
-                        color="secondary"
-                        onClick={() => setDeleteBoard(true)}
-                    >
-                        <DeleteIcon />
-                    </IconButton>
-                    <ConfirmationDialog
-                        isOpen={deleteBoard}
-                        confirmButtonLabel="Delete"
-                        isConfirming={false}
-                        message="Are you sure you want to delete this board"
-                        onClose={() => setDeleteBoard(false)}
-                        title="Delete confirmation"
-                        onConfirm={deleteBoardHandler}
-                    />
+                            <Modal
+                                isOpen={isCreateBoardOpen}
+                                onClose={() => {
+                                    dispatch({
+                                        type: "CLOSE_CREATE_BOARD_MODAL",
+                                    });
+                                }}
+                            >
+                                <EditBoardForm board={boardData.data} />
+                            </Modal>
+                            <IconButton
+                                aria-label="delete"
+                                color="secondary"
+                                onClick={() => setDeleteBoard(true)}
+                            >
+                                <DeleteIcon />
+                            </IconButton>
+                            <ConfirmationDialog
+                                isOpen={deleteBoard}
+                                confirmButtonLabel="Delete"
+                                isConfirming={false}
+                                message="Are you sure you want to delete this board"
+                                onClose={() => setDeleteBoard(false)}
+                                title="Delete confirmation"
+                                onConfirm={deleteBoardHandler}
+                            />
+                        </>
+                    ) : (
+                        ""
+                    )}
+
                     <InfoContainer>
-                        <div><span>Title : </span> {boardData.data.name}</div>
-                        <div><span>Description :</span></div>
+                        <div>
+                            <span>Title : </span> {boardData.data.name}
+                        </div>
+                        <div>
+                            <span>Description :</span>
+                        </div>
                         <div>{boardData.data.description}</div>
-                        <div><span>Created : </span> {boardData.data.created_at}</div>
-                        <div><span>Created by: </span> {boardData.data.owner.name}</div>
+                        <div>
+                            <span>Created : </span> {boardData.data.created_at}
+                        </div>
+                        <div>
+                            <span>Created by: </span>{" "}
+                            {boardData.data.owner.name}
+                        </div>
                         <div className="members">
                             <span>Members </span>
-                            <a href="#" onClick={handleInviteClick}>
-                                invite
-                            </a>
+                            {userId === boardData.data.owner.id ? (
+                                <a href="#" onClick={handleInviteClick}>
+                                    invite
+                                </a>
+                            ) : (
+                                ""
+                            )}
                         </div>
                         <div>
                             {boardData.data.members.map((member: any) => (
-                                <div key={member.id}>{member.name}</div>
+                                <div key={member.id}>
+                                    {member.name}{" "}
+                                    {member.id === boardData.data.owner.id
+                                        ? "(owner)"
+                                        : ""}
+                                </div>
                             ))}
                         </div>
                     </InfoContainer>
