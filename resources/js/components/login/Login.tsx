@@ -26,7 +26,11 @@ const Login: React.FC = () => {
                             token: data.access_token,
                             user: data.user,
                         });
-                        dispatch({ type: "LOGIN", payload: data.user.name });
+                        dispatch({
+                            type: "LOGIN",
+                            userName: data.user.name,
+                            userId: data.user.id,
+                        });
                         history.push("/dashboard");
                     }
                 })
