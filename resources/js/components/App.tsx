@@ -9,6 +9,7 @@ import BoardList from "./list/BoardList";
 import ProtectedRoute from "./common/ProtectedRoute";
 import Invite from "./invite/Invite";
 import Snackbar from "./common/Snackbar";
+import Page404 from "./page404";
 
 const AppWrapper = styled.div`
     min-height: 100vh;
@@ -41,6 +42,9 @@ const App: React.FC = () => {
                     </ProtectedRoute>
                     <Route path="/invite/:boardId">
                         <Invite />
+                    </Route>
+                    <Route path="*">
+                        <Page404 />
                     </Route>
                 </Switch>
                 <Snackbar />
