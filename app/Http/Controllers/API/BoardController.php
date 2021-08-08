@@ -58,7 +58,7 @@ class BoardController extends ResponseController
     {
         $user = $request->user();
         $query = $user->boards();
-        if ($this->boardService->nameExists($request,$query)) {
+        if ($this->boardService->nameExists($request,$query,$board)) {
             return $this->responseUnprocessable([
                 'name' => ['Project name already exists. Please select another name'],
             ]);

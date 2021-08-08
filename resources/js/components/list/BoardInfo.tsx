@@ -110,7 +110,19 @@ const BoardInfo = () => {
                 }
             )
             .then((res) => {
+                dispatch({
+                    type: "OPEN_SNACKBAR",
+                    severity: "success",
+                    message: "Successfully deleted board",
+                });
                 history.push("/dashboard");
+            })
+            .catch(err => {
+                dispatch({
+                    type: "OPEN_SNACKBAR",
+                    severity: "error",
+                    message: "Something went wrong. please try again later",
+                });
             });
     };
     return (
@@ -177,7 +189,7 @@ const BoardInfo = () => {
                         </div>
                         <div>
                             {boardData.data.members.map((member: any) => (
-                                <div>{member.name}</div>
+                                <div key={member.id}>{member.name}</div>
                             ))}
                         </div>
                     </InfoContainer>
