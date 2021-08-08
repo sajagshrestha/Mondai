@@ -28,12 +28,21 @@ const CreateBoardForm: React.FC = () => {
             });
             handleClose();
         }
-        catch{
-            dispatch({
-                type: "OPEN_SNACKBAR",
-                severity: "error",
-                message: "Something went wrong. please try again later",
-            });
+        catch(err){
+            if(err.response.data.status == 422){
+                dispatch({
+                    type: "OPEN_SNACKBAR",
+                    severity: "error",
+                    message: err.response.data.errors.name,
+                });
+            }
+            else{
+                dispatch({
+                    type: "OPEN_SNACKBAR",
+                    severity: "error",
+                    message: "Something went wrong. PLease try again later",
+                });
+            }
         }
     };
 
