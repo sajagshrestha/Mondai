@@ -8,6 +8,7 @@ const DropDownMenuWrapper = styled.div`
     bottom: -2.5rem;
     right: 0;
     cursor: pointer;
+    z-index: 199;
 `;
 const DropDownItem = styled.div`
     background-color: ${(props) => props.theme.colorOrange};
@@ -17,7 +18,6 @@ const DropDownItem = styled.div`
     font-size: 1.1rem;
     color: ${(props) => props.theme.primaryText};
     font-weight: 700;
-    z-index: 2;
 `;
 const DropdownMenu: React.FC<{ handleClose: () => void }> = ({
     handleClose,

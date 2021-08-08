@@ -6,6 +6,10 @@ import { useReduxSelector } from "../../reducers";
 import { UserMenuButton } from "../common/userMenuButton";
 import ExpandMoreOutlinedIcon from "@material-ui/icons/ExpandMoreOutlined";
 import DropdownMenu from "./DropDownMenu";
+import MuiMenu from "@material-ui/core/Menu";
+import MuiMenuItem from "@material-ui/core/MenuItem";
+import { useReduxDispatch } from "../../reducers";
+import { removeFromStorage } from "../../utils/localStorage";
 
 const NavWrapper = styled.div`
     height: 6rem;
@@ -15,6 +19,14 @@ const NavWrapper = styled.div`
     margin-bottom: 1rem;
     position: relative;
 `;
+
+const Menu = styled(MuiMenu)`
+    &&.MuiPaper-root {
+        background-color: red;
+    }
+`;
+
+const MenuItem = styled(MuiMenuItem)``;
 
 const Logo = styled.img`
     height: 3rem;
@@ -36,7 +48,23 @@ const NavLink = styled(Link)`
 
 const Nav: React.FC = () => {
     const { userName, isLoggedIn } = useReduxSelector((state) => state.user);
-    const [isOpen, setOpen] = useState<boolean>(false);
+    const [anchorEl, setAnchorEl] = React.useState(null);
+
+    const dispatch = useReduxDispatch();
+
+    const handleClick = (event: any) => {
+        setAnchorEl(event.currentTarget);
+    };
+
+    const handleClose = () => {
+        setAnchorEl(null);
+    };
+
+    const logout = () => {
+        removeFromStorage("user");
+        dispatch({ type: "LOGOUT" });
+        handleClose();
+    };
 
     const history = useHistory();
 
@@ -49,10 +77,7 @@ const Nav: React.FC = () => {
                         <NavLink to="/dashboard">Dashboard</NavLink>
 
                         <UserMenuButton
-                            onClick={() => {
-                                console.log("open");
-                                setOpen(true);
-                            }}
+                            onClick={handleClick}
                             variant="outlined"
                             endIcon={<ExpandMoreOutlinedIcon />}
                         >
@@ -60,13 +85,17 @@ const Nav: React.FC = () => {
                         </UserMenuButton>
                     </>
                 )}
-                {isOpen ? (
-                    <DropdownMenu
-                        handleClose={() => {
-                            setOpen(false);
-                        }}
-                    />
-                ) : null}
+                <Menu
+                    id="simple-menu"
+                    anchorEl={anchorEl}
+                    anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+                    getContentAnchorEl={null}
+                    keepMounted
+                    open={Boolean(anchorEl)}
+                    onClose={handleClose}
+                >
+                    <MenuItem onClick={logout}>Logout</MenuItem>
+                </Menu>
             </NavLinksSection>
         </NavWrapper>
     );

@@ -214,7 +214,7 @@ const BoardInfo = () => {
                         <div>
                             {boardData.data.members.map((member: any) => (
                                 <div key={member.id}>
-                                    {member.name}{" "}
+                                    {member.name}
                                     {member.id === boardData.data.owner.id
                                         ? "(owner)"
                                         : ""}
