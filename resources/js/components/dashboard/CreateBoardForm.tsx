@@ -18,9 +18,23 @@ const CreateBoardForm: React.FC = () => {
     const handleClose = () => dispatch({ type: "CLOSE_CREATE_BOARD_MODAL" });
 
     const handleSubmit = async (formData: FormData) => {
-        await mutateAsync(formData);
-        queryClient.invalidateQueries("boards");
-        handleClose();
+       try{
+            await mutateAsync(formData);
+            queryClient.invalidateQueries("boards");
+            dispatch({
+                type: "OPEN_SNACKBAR",
+                severity: "success",
+                message: "Successfully created board",
+            });
+            handleClose();
+        }
+        catch{
+            dispatch({
+                type: "OPEN_SNACKBAR",
+                severity: "error",
+                message: "Something went wrong. please try again later",
+            });
+        }
     };
 
     return (

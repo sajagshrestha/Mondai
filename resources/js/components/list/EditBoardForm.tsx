@@ -15,9 +15,21 @@ const EditBoardForm: React.FC<{ board: any }> = ({ board }) => {
         (formdata: FormData) => editBoard(board.id, formdata),
         {
             onSuccess: async () => {
+                dispatch({
+                    type: "OPEN_SNACKBAR",
+                    severity: "success",
+                    message: "Successfully updated board",
+                });
                 queryClient.invalidateQueries("boards");
                 queryClient.invalidateQueries("board");
                 handleClose();
+            },
+            onError: () => {
+                dispatch({
+                    type: "OPEN_SNACKBAR",
+                    severity: "error",
+                    message: "Something went wrong. please try again later",
+                });
             },
         }
     );
@@ -33,7 +45,7 @@ const EditBoardForm: React.FC<{ board: any }> = ({ board }) => {
     return (
         <BoardForm
             initialValues={initialValue}
-            formTitle={"Create New Board"}
+            formTitle={"Edit Board"}
             buttonLabel={"Edit"}
             onClose={handleClose}
             onSubmitForm={handleSubmit}
